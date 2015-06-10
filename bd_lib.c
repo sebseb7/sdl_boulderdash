@@ -90,7 +90,7 @@ int render_field(int cave,int level,int field[CAVE_WIDTH][CAVE_HEIGHT])
 		}
 	}
 
-	for(int y = 0; y < CAVE_HEIGHT-2; y++) {
+	for(int y = 1; y < CAVE_HEIGHT-1; y++) {
 		for(int x = 0; x < CAVE_WIDTH; x++) {
 			NextRandom(&RandSeed1, &RandSeed2);
 			int store=BD_DIRT;
@@ -100,7 +100,7 @@ int render_field(int cave,int level,int field[CAVE_WIDTH][CAVE_HEIGHT])
 				}
 			}
 			if((x>0)&&(x<CAVE_WIDTH-1))
-				field[x][y+1]=store;
+				field[x][y]=store;
 		}     
 	} 
 
