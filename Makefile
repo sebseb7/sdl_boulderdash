@@ -10,7 +10,7 @@ clean:
 
 
 bd_test: main.c bd_caves.h Makefile 
-	@$(COMPILER) $(FLAGS) $(LDFLAGS) main.c -o bd_test 
+	@$(COMPILER) $(FLAGS) $(LDFLAGS) main.c bd_lib.c -o bd_test 
 
 .PHONY : clean all 
 

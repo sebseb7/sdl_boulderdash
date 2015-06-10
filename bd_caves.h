@@ -1,57 +1,13 @@
 #ifndef _BD_CAVES_H
 #define _BD_CAVES_H
 
-enum {
-	BD_WALL=1,
-	BD_DIRT,
-	BD_STEELWALL,
-	BD_MAGICWALL,
-	BD_FIREFLYr,
-	BD_FIREFLYl,
-	BD_BOULDER,
-	BD_DIAMOND,
-	BD_SPACE,
-	BD_INBOX,
-	BD_OUTBOX,
-	BD_AMOEBA,
-	BD_Rockford,
-	BD_DRAW_LINE,
-	BD_DRAW_POINT,
-	BD_DRAW_FILLRECT,
-	BD_DRAW_FILLRECT2,
-	BD_DRAW_RASTER,
-	BD_DRAW_RECTANGLE,
-	BD_COLOR_ORANGE,
-	BD_COLOR_GRAY1,
-	BD_COLOR_WHITE,
-	BD_COLOR_PURPLE,
-	BD_COLOR_GREEN
-};
+#include "bd_lib.h"
 
-int bd_caves = 4;
+const int bd_caves = 4;
 
-int bd_cave_start_idx[] = {0,155,276,357};
+const int bd_cave_start_idx[] = {0,155,276,357};
 
-#define CAVE_WIDTH 40
-#define CAVE_HEIGHT 22
-
-
-struct cave_struct_t 
-{
-	int DiamonValue;
-	int DiamonValueBonus;
-	int DiamondsRequired[5];
-	int CaveTime[5];
-	int Colors[3];
-	int RandSeed[5];
-	int RandomFill[8];
-	int MagicWallTime;
-	int AmoebaTime;
-	int DrawItems;
-} __attribute__ ((packed));
-
-
-int bd_cave_data[] = {
+const int bd_cave_data[] = {
 
 	// 1
 	15,0,
