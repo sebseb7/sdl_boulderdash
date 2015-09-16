@@ -18,4 +18,6 @@ struct bd_game_struct_t
 } __attribute__ ((packed));
 
 
+struct bd_game_struct_t* bd_game_initialize(int level,int difficulty);
+
 #endif
