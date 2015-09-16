@@ -4,16 +4,21 @@
 
 #include "bd_lib.h"
 
+
+#define CAVEMAP_COVERED 0
+
 struct bd_game_struct_t 
 {
+	int Tick;
 	int Difficulty;
 	int DiamonValue;
 	int DiamonValueBonus;
 	int DiamondsRequired;
 	int CaveTime;
-	int Colors[3];
+	int* Colors;
 	int MagicWallTime;
 	int AmoebaTime;
+	char covered[CAVE_WIDTH][CAVE_HEIGHT];
 	int cavemap[CAVE_WIDTH][CAVE_HEIGHT];
 } __attribute__ ((packed));
 

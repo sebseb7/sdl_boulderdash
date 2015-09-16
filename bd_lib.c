@@ -3,7 +3,7 @@
 extern int bd_cave_data[];
 extern int bd_cave_start_idx[];
 
-static void NextRandom(int *RandSeed1, int *RandSeed2)
+void NextRandom(int *RandSeed1, int *RandSeed2)
 {
 	short TempRand1;
 	short TempRand2;
@@ -26,11 +26,11 @@ static void NextRandom(int *RandSeed1, int *RandSeed2)
 	*RandSeed1 = result & 0x00FF;
 }
 			
-static void draw_point(int x,int y,int item,int field[CAVE_WIDTH][CAVE_HEIGHT])
+void draw_point(int x,int y,int item,int field[CAVE_WIDTH][CAVE_HEIGHT])
 {
 	field[x][y]=item;
 }
-static void draw_fillrect(int x1,int y1,int x2, int y2,int item,int field[CAVE_WIDTH][CAVE_HEIGHT])
+void draw_fillrect(int x1,int y1,int x2, int y2,int item,int field[CAVE_WIDTH][CAVE_HEIGHT])
 {
 	for(int x=x1;x<=x2;x++)
 	{
@@ -40,7 +40,7 @@ static void draw_fillrect(int x1,int y1,int x2, int y2,int item,int field[CAVE_W
 		}
 	}
 }
-static void draw_rect(int x1,int y1,int x2, int y2,int item,int field[CAVE_WIDTH][CAVE_HEIGHT])
+void draw_rect(int x1,int y1,int x2, int y2,int item,int field[CAVE_WIDTH][CAVE_HEIGHT])
 {
 	for(int x=x1;x<=x2;x++)
 	{
@@ -51,7 +51,7 @@ static void draw_rect(int x1,int y1,int x2, int y2,int item,int field[CAVE_WIDTH
 		}
 	}
 }
-static void draw_fillrect2(int x1,int y1,int x2, int y2,int item,int item2,int field[CAVE_WIDTH][CAVE_HEIGHT])
+void draw_fillrect2(int x1,int y1,int x2, int y2,int item,int item2,int field[CAVE_WIDTH][CAVE_HEIGHT])
 {
 	for(int x=x1;x<=x2;x++)
 	{
@@ -64,7 +64,7 @@ static void draw_fillrect2(int x1,int y1,int x2, int y2,int item,int item2,int f
 		}
 	}
 }
-static void draw_raster(int x1,int y1,int count_x, int count_y,int offset_x,int offset_y,int item,int field[CAVE_WIDTH][CAVE_HEIGHT])
+void draw_raster(int x1,int y1,int count_x, int count_y,int offset_x,int offset_y,int item,int field[CAVE_WIDTH][CAVE_HEIGHT])
 {
 	for(int x=0;x<count_x;x++)
 	{
