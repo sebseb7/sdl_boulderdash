@@ -113,3 +113,28 @@ void bd_game_process(struct bd_game_struct_t* bd_game)
 
 }
 
+void bd_game_render(struct bd_game_struct_t* bd_game,char display[CAVE_WIDTH][CAVE_HEIGHT])
+{
+	for(int y = 1; y < CAVE_HEIGHT-1; y++) 
+	{
+		for(int x = 0; x < CAVE_WIDTH; x++) 
+		{
+			if(bd_game->Tick < BD_UNCOVER_LOOP*CAVE_HEIGHT)
+			{
+				if(bd_game->covered[x][y])
+				{
+					display[x][y]=BD_STEELWALL;
+				}
+				else
+				{
+					display[x][y]=bd_game->cavemap[x][y];
+				}
+			}
+			else
+			{
+				display[x][y]=bd_game->cavemap[x][y];
+			}
+		}
+	}
+}
+

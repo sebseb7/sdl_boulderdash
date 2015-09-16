@@ -2,6 +2,8 @@ COMPILER = gcc
 FLAGS= --std=gnu99 -Wall  -funsigned-char -Wundef -Wsign-compare  -Wstrict-prototypes 
 LDFLAGS=
 
+FLAGS+= `sdl-config --cflags`
+LDFLAGS+= `sdl-config --libs`
 
 all: bd_test
 
