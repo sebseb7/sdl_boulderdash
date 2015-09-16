@@ -2,6 +2,8 @@
 
 #include "bd_game.h"
 
+#define BD_UNCOVER_LOOP 69
+
 extern int bd_cave_data[];
 extern int bd_cave_start_idx[];
 
@@ -25,6 +27,7 @@ struct bd_game_struct_t* bd_game_initialize(int level,int difficulty)
 
 
 
+	bd_game->Tick=0;
 	bd_game->Difficulty=difficulty;
 	bd_game->DiamonValue=cavedata->DiamonValue;
 	bd_game->DiamonValueBonus=cavedata->DiamonValueBonus;
@@ -91,5 +94,22 @@ struct bd_game_struct_t* bd_game_initialize(int level,int difficulty)
 
 
 	return bd_game;
+}
+
+void bd_game_process(struct bd_game_struct_t* bd_game)
+{
+	int tick = bd_game->Tick++;
+
+	int uncovered = 1;
+
+	if(tick < BD_UNCOVER_LOOP*CAVE_HEIGHT)
+	{
+		int line = tick%CAVE_HEIGHT;
+		int pos = random()%CAVE_WIDTH;
+		bd_game->covered[pos][line] = 0;
+		uncovered=0;
+	}
+
+
 }
 
