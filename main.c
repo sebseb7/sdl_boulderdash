@@ -165,13 +165,6 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 		SDL_Flip(screen);
 		SDL_Delay(10);
 
-		/*if( now < animations[current_animation].timing )
-		{
-			SDL_Delay(animations[current_animation].timing - now);
-		}
-		lastFrame = SDL_GetTicks();
-*/
-		
 
 	}
 
