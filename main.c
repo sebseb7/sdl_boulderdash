@@ -10,7 +10,7 @@
 
 static SDL_Surface* screen;
 
-#define SDL_ZOOM 30
+#define SDL_ZOOM 15
 
 int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unused__))) 
 {
@@ -138,12 +138,13 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 				SDL_FillRect(
 					screen, 
 					&rect, 
-					SDL_MapRGB(screen->format, display[x][y]*10,0,0)
+					SDL_MapRGB(screen->format, display[x][y]*18,0,0)
 				);
 			}
 		}
 		
 		SDL_Flip(screen);
+		SDL_Delay(10);
 
 		/*if( now < animations[current_animation].timing )
 		{

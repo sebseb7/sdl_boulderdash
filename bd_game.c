@@ -100,14 +100,155 @@ void bd_game_process(struct bd_game_struct_t* bd_game)
 {
 	int tick = bd_game->Tick++;
 
+
+	int move_tick = tick%15;
+
 	int uncovered = 1;
 
-	if(tick < BD_UNCOVER_LOOP*CAVE_HEIGHT)
+	//printf("%i %i %i\n",tick,BD_UNCOVER_LOOP,move_tick);
+
+
+	if(tick < BD_UNCOVER_LOOP)
 	{
-		int line = tick%CAVE_HEIGHT;
-		int pos = random()%CAVE_WIDTH;
-		bd_game->covered[pos][line] = 0;
+		for(int line=0;line < CAVE_HEIGHT;line++)
+		{
+			int pos = random()%CAVE_WIDTH;
+			bd_game->covered[pos][line] = 0;
+		}
 		uncovered=0;
+	}
+
+	int new_cavemap[CAVE_WIDTH][CAVE_HEIGHT];
+	for(int y = 1; y < CAVE_HEIGHT-1; y++) 
+	{
+		for(int x = 0; x < CAVE_WIDTH; x++) 
+		{
+			new_cavemap[x][y]=bd_game->cavemap[x][y];
+		}
+	}
+
+
+	for(int y = 1; y < CAVE_HEIGHT-1; y++) 
+	{
+		for(int x = 0; x < CAVE_WIDTH; x++) 
+		{
+			switch(bd_game->cavemap[x][y])
+			{
+				case BD_FIREFLYr:
+					if(move_tick==0)
+					{
+						if((y>1)&&(bd_game->cavemap[x][y-1] == BD_SPACE))
+						{
+							new_cavemap[x][y-1]=BD_FIREFLYt;
+							new_cavemap[x][y]=BD_SPACE;
+						}
+						else if((x<CAVE_WIDTH-1)&&(bd_game->cavemap[x+1][y] == BD_SPACE))
+						{
+							new_cavemap[x+1][y]=BD_FIREFLYr;
+							new_cavemap[x][y]=BD_SPACE;
+						}
+						else if((y<CAVE_HEIGHT-1)&&(bd_game->cavemap[x][y+1] == BD_SPACE))
+						{
+							new_cavemap[x][y+1]=BD_FIREFLYd;
+							new_cavemap[x][y]=BD_SPACE;
+						}
+						else if((x>1)&&(bd_game->cavemap[x-1][y] == BD_SPACE))
+						{
+							new_cavemap[x-1][y]=BD_FIREFLYl;
+							new_cavemap[x][y]=BD_SPACE;
+						}
+					};
+					break;
+				case BD_FIREFLYl:
+					if(move_tick==0)
+					{
+						if((y<CAVE_HEIGHT-1)&&(bd_game->cavemap[x][y+1] == BD_SPACE))
+						{
+							new_cavemap[x][y+1]=BD_FIREFLYd;
+							new_cavemap[x][y]=BD_SPACE;
+						}
+						else if((x>1)&&(bd_game->cavemap[x-1][y] == BD_SPACE))
+						{
+							new_cavemap[x-1][y]=BD_FIREFLYl;
+							new_cavemap[x][y]=BD_SPACE;
+						}
+						else if((y>1)&&(bd_game->cavemap[x][y-1] == BD_SPACE))
+						{
+							new_cavemap[x][y-1]=BD_FIREFLYt;
+							new_cavemap[x][y]=BD_SPACE;
+						}
+						else if((x<CAVE_WIDTH-1)&&(bd_game->cavemap[x+1][y] == BD_SPACE))
+						{
+							new_cavemap[x+1][y]=BD_FIREFLYr;
+							new_cavemap[x][y]=BD_SPACE;
+						}
+					};
+					break;
+				case BD_FIREFLYd:
+					if(move_tick==0)
+					{
+						if((x<CAVE_WIDTH-1)&&(bd_game->cavemap[x+1][y] == BD_SPACE))
+						{
+							new_cavemap[x+1][y]=BD_FIREFLYr;
+							new_cavemap[x][y]=BD_SPACE;
+						}
+						else if((y<CAVE_HEIGHT-1)&&(bd_game->cavemap[x][y+1] == BD_SPACE))
+						{
+							new_cavemap[x][y+1]=BD_FIREFLYd;
+							new_cavemap[x][y]=BD_SPACE;
+						}
+						else if((x>1)&&(bd_game->cavemap[x-1][y] == BD_SPACE))
+						{
+							new_cavemap[x-1][y]=BD_FIREFLYl;
+							new_cavemap[x][y]=BD_SPACE;
+						}
+						else if((y>1)&&(bd_game->cavemap[x][y-1] == BD_SPACE))
+						{
+							new_cavemap[x][y-1]=BD_FIREFLYt;
+							new_cavemap[x][y]=BD_SPACE;
+						}
+					};
+					break;
+				case BD_FIREFLYt:
+					if(move_tick==0)
+					{
+						if((x>1)&&(bd_game->cavemap[x-1][y] == BD_SPACE))
+						{
+							new_cavemap[x-1][y]=BD_FIREFLYl;
+							new_cavemap[x][y]=BD_SPACE;
+						}
+						else if((y>1)&&(bd_game->cavemap[x][y-1] == BD_SPACE))
+						{
+							new_cavemap[x][y-1]=BD_FIREFLYt;
+							new_cavemap[x][y]=BD_SPACE;
+						}
+						else if((x<CAVE_WIDTH-1)&&(bd_game->cavemap[x+1][y] == BD_SPACE))
+						{
+							new_cavemap[x+1][y]=BD_FIREFLYr;
+							new_cavemap[x][y]=BD_SPACE;
+						}
+						else if((y<CAVE_HEIGHT-1)&&(bd_game->cavemap[x][y+1] == BD_SPACE))
+						{
+							new_cavemap[x][y+1]=BD_FIREFLYd;
+							new_cavemap[x][y]=BD_SPACE;
+						}
+					};
+					break;
+			}
+		}
+	}
+
+
+
+
+
+
+	for(int y = 1; y < CAVE_HEIGHT-1; y++) 
+	{
+		for(int x = 0; x < CAVE_WIDTH; x++) 
+		{
+			bd_game->cavemap[x][y] = new_cavemap[x][y];
+		}
 	}
 
 
@@ -119,7 +260,7 @@ void bd_game_render(struct bd_game_struct_t* bd_game,char display[CAVE_WIDTH][CA
 	{
 		for(int x = 0; x < CAVE_WIDTH; x++) 
 		{
-			if(bd_game->Tick < BD_UNCOVER_LOOP*CAVE_HEIGHT)
+			if(bd_game->Tick < BD_UNCOVER_LOOP)
 			{
 				if(bd_game->covered[x][y])
 				{
