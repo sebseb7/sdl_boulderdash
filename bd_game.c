@@ -101,7 +101,7 @@ void bd_game_process(struct bd_game_struct_t* bd_game)
 	int tick = bd_game->Tick++;
 
 
-	int move_tick = tick%15;
+	int move_tick = tick%13;
 
 	int uncovered = 1;
 
@@ -132,108 +132,33 @@ void bd_game_process(struct bd_game_struct_t* bd_game)
 	{
 		for(int x = 0; x < CAVE_WIDTH; x++) 
 		{
-			switch(bd_game->cavemap[x][y])
+			int curr_type = bd_game->cavemap[x][y];
+			switch(curr_type)
 			{
 				case BD_FIREFLYr:
-					if(move_tick==0)
-					{
-						if((y>1)&&(bd_game->cavemap[x][y-1] == BD_SPACE))
-						{
-							new_cavemap[x][y-1]=BD_FIREFLYt;
-							new_cavemap[x][y]=BD_SPACE;
-						}
-						else if((x<CAVE_WIDTH-1)&&(bd_game->cavemap[x+1][y] == BD_SPACE))
-						{
-							new_cavemap[x+1][y]=BD_FIREFLYr;
-							new_cavemap[x][y]=BD_SPACE;
-						}
-						else if((y<CAVE_HEIGHT-1)&&(bd_game->cavemap[x][y+1] == BD_SPACE))
-						{
-							new_cavemap[x][y+1]=BD_FIREFLYd;
-							new_cavemap[x][y]=BD_SPACE;
-						}
-						else if((x>1)&&(bd_game->cavemap[x-1][y] == BD_SPACE))
-						{
-							new_cavemap[x-1][y]=BD_FIREFLYl;
-							new_cavemap[x][y]=BD_SPACE;
-						}
-					};
-					break;
 				case BD_FIREFLYl:
-					if(move_tick==0)
-					{
-						if((y<CAVE_HEIGHT-1)&&(bd_game->cavemap[x][y+1] == BD_SPACE))
-						{
-							new_cavemap[x][y+1]=BD_FIREFLYd;
-							new_cavemap[x][y]=BD_SPACE;
-						}
-						else if((x>1)&&(bd_game->cavemap[x-1][y] == BD_SPACE))
-						{
-							new_cavemap[x-1][y]=BD_FIREFLYl;
-							new_cavemap[x][y]=BD_SPACE;
-						}
-						else if((y>1)&&(bd_game->cavemap[x][y-1] == BD_SPACE))
-						{
-							new_cavemap[x][y-1]=BD_FIREFLYt;
-							new_cavemap[x][y]=BD_SPACE;
-						}
-						else if((x<CAVE_WIDTH-1)&&(bd_game->cavemap[x+1][y] == BD_SPACE))
-						{
-							new_cavemap[x+1][y]=BD_FIREFLYr;
-							new_cavemap[x][y]=BD_SPACE;
-						}
-					};
-					break;
-				case BD_FIREFLYd:
-					if(move_tick==0)
-					{
-						if((x<CAVE_WIDTH-1)&&(bd_game->cavemap[x+1][y] == BD_SPACE))
-						{
-							new_cavemap[x+1][y]=BD_FIREFLYr;
-							new_cavemap[x][y]=BD_SPACE;
-						}
-						else if((y<CAVE_HEIGHT-1)&&(bd_game->cavemap[x][y+1] == BD_SPACE))
-						{
-							new_cavemap[x][y+1]=BD_FIREFLYd;
-							new_cavemap[x][y]=BD_SPACE;
-						}
-						else if((x>1)&&(bd_game->cavemap[x-1][y] == BD_SPACE))
-						{
-							new_cavemap[x-1][y]=BD_FIREFLYl;
-							new_cavemap[x][y]=BD_SPACE;
-						}
-						else if((y>1)&&(bd_game->cavemap[x][y-1] == BD_SPACE))
-						{
-							new_cavemap[x][y-1]=BD_FIREFLYt;
-							new_cavemap[x][y]=BD_SPACE;
-						}
-					};
-					break;
 				case BD_FIREFLYt:
-					if(move_tick==0)
+				case BD_FIREFLYd:
+					if(move_tick ==0)
 					{
-						if((x>1)&&(bd_game->cavemap[x-1][y] == BD_SPACE))
+						int dir = firefly_left(curr_type);
+
+						if(bd_game->cavemap[x+firefly_x(dir)][y+firefly_y(dir)] == BD_SPACE)
 						{
-							new_cavemap[x-1][y]=BD_FIREFLYl;
+							new_cavemap[x+firefly_x(dir)][y+firefly_y(dir)]=dir;
 							new_cavemap[x][y]=BD_SPACE;
 						}
-						else if((y>1)&&(bd_game->cavemap[x][y-1] == BD_SPACE))
+						else if( bd_game->cavemap[x+firefly_x(curr_type)][y+firefly_y(curr_type)] == BD_SPACE)
 						{
-							new_cavemap[x][y-1]=BD_FIREFLYt;
+							new_cavemap[x+firefly_x(curr_type)][y+firefly_y(curr_type)]=curr_type;
 							new_cavemap[x][y]=BD_SPACE;
 						}
-						else if((x<CAVE_WIDTH-1)&&(bd_game->cavemap[x+1][y] == BD_SPACE))
+						else
 						{
-							new_cavemap[x+1][y]=BD_FIREFLYr;
-							new_cavemap[x][y]=BD_SPACE;
+							new_cavemap[x][y]=firefly_right(curr_type);
 						}
-						else if((y<CAVE_HEIGHT-1)&&(bd_game->cavemap[x][y+1] == BD_SPACE))
-						{
-							new_cavemap[x][y+1]=BD_FIREFLYd;
-							new_cavemap[x][y]=BD_SPACE;
-						}
-					};
-					break;
+					}
+				break;
 			}
 		}
 	}

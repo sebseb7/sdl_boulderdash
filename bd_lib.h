@@ -59,4 +59,10 @@ void draw_point(int x,int y,int item,int field[CAVE_WIDTH][CAVE_HEIGHT]);
 void draw_raster(int x1,int y1,int count_x, int count_y,int offset_x,int offset_y,int item,int field[CAVE_WIDTH][CAVE_HEIGHT]);
 void draw_rect(int x1,int y1,int x2, int y2,int item,int field[CAVE_WIDTH][CAVE_HEIGHT]);
 
+
+int firefly_left(int firefly);
+int firefly_right(int firefly);
+int firefly_x(int firefly);
+int firefly_y(int firefly);
+
 #endif

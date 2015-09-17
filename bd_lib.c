@@ -140,3 +140,32 @@ int render_field(int cave,int level,int field[CAVE_WIDTH][CAVE_HEIGHT])
 	return offset;
 }
 
+int firefly_left(int firefly)
+{
+	if(firefly == BD_FIREFLYr) return BD_FIREFLYt;
+	if(firefly == BD_FIREFLYt) return BD_FIREFLYl;
+	if(firefly == BD_FIREFLYl) return BD_FIREFLYd;
+	return BD_FIREFLYr;
+}
+int firefly_right(int firefly)
+{
+	if(firefly == BD_FIREFLYr) return BD_FIREFLYd;
+	if(firefly == BD_FIREFLYd) return BD_FIREFLYl;
+	if(firefly == BD_FIREFLYl) return BD_FIREFLYt;
+	return BD_FIREFLYr;
+}
+int firefly_x(int firefly)
+{
+	if(firefly == BD_FIREFLYr) return 1;
+	if(firefly == BD_FIREFLYd) return 0;
+	if(firefly == BD_FIREFLYl) return -1;
+	return 0;
+}
+int firefly_y(int firefly)
+{
+	if(firefly == BD_FIREFLYr) return 0;
+	if(firefly == BD_FIREFLYd) return 1;
+	if(firefly == BD_FIREFLYl) return 0;
+	return -1;
+}
+
