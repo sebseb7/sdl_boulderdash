@@ -205,7 +205,7 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 
 void bd_game_render(struct bd_game_struct_t* bd_game,char display[CAVE_WIDTH][CAVE_HEIGHT])
 {
-	for(int y = 1; y < CAVE_HEIGHT-1; y++) 
+	for(int y = 0; y < CAVE_HEIGHT; y++) 
 	{
 		for(int x = 0; x < CAVE_WIDTH; x++) 
 		{

@@ -144,7 +144,7 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 
 		bd_game_render(bd_game,display);
 	
-		for(int y = 1; y < CAVE_HEIGHT-1; y++) 
+		for(int y = 0; y < CAVE_HEIGHT; y++) 
 		{
 			for(int x = 0; x < CAVE_WIDTH; x++) 
 			{
