@@ -169,3 +169,20 @@ int firefly_y(int firefly)
 	return -1;
 }
 
+int move_x(int direction)
+{
+	if(direction == 1) return 0;
+	if(direction == 2) return 1;
+	if(direction == 3) return 0;
+	if(direction == 4) return -1;
+	return 0;
+}
+int move_y(int direction)
+{
+	if(direction == 1) return -1;
+	if(direction == 2) return 0;
+	if(direction == 3) return 1;
+	if(direction == 4) return 0;
+	return 0;
+}
+

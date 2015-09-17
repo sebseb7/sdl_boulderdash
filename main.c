@@ -12,6 +12,9 @@ static SDL_Surface* screen;
 
 #define SDL_ZOOM 15
 
+
+
+
 int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unused__))) 
 {
 	srand(time(NULL));
@@ -96,6 +99,9 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 
 	int running = 1;
 
+
+	int direction=0;
+
 	while(running) 
 	{
 		SDL_Event ev;
@@ -106,6 +112,7 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 					running = 0;
 					break;
 				case SDL_KEYUP:
+					direction = 0;
 					break;
 				case SDL_KEYDOWN:
 					switch(ev.key.keysym.sym) 
@@ -113,13 +120,25 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 						case SDLK_ESCAPE:
 							running = 0;
 							break;
+						case SDLK_UP:
+							direction = 1;
+							break;
+						case SDLK_RIGHT:
+							direction = 2;
+							break;
+						case SDLK_DOWN:
+							direction = 3;
+							break;
+						case SDLK_LEFT:
+							direction = 4;
+							break;
 						default: break;
 					}
 				default: break;
 			}
 		}
 
-		bd_game_process(bd_game);
+		bd_game_process(bd_game,direction);
 	
 		char display[CAVE_WIDTH][CAVE_HEIGHT];
 

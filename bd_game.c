@@ -97,7 +97,7 @@ struct bd_game_struct_t* bd_game_initialize(int level,int difficulty)
 	return bd_game;
 }
 
-void bd_game_process(struct bd_game_struct_t* bd_game)
+void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 {
 	int tick = bd_game->Tick++;
 
@@ -140,6 +140,24 @@ void bd_game_process(struct bd_game_struct_t* bd_game)
 					if(bd_game->Tick == BD_START_DELAY)
 						new_cavemap[x][y]=BD_ROCKFORD;
 
+					break;
+				case BD_ROCKFORD:
+					if(move_tick ==0)
+					{
+						
+						if(direction != 0)
+						{
+							if(
+								(bd_game->cavemap[x+move_x(direction)][y+move_y(direction)] == BD_SPACE)||
+								(bd_game->cavemap[x+move_x(direction)][y+move_y(direction)] == BD_DIRT)
+							)
+						{
+							new_cavemap[x+move_x(direction)][y+move_y(direction)]=BD_ROCKFORD;
+							new_cavemap[x][y]=BD_SPACE;
+						}
+								
+						}
+					}
 					break;
 				case BD_FIREFLYr:
 				case BD_FIREFLYl:

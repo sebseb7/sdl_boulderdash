@@ -64,5 +64,7 @@ int firefly_left(int firefly);
 int firefly_right(int firefly);
 int firefly_x(int firefly);
 int firefly_y(int firefly);
+int move_x(int direction);
+int move_y(int direction);
 
 #endif
