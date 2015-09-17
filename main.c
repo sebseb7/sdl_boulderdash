@@ -148,8 +148,8 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 		{
 			for(int x = 0; x < CAVE_WIDTH; x++) 
 			{
-				
-				
+				int colors[3];	
+				get_colors(display[x][y],bd_game->Tick,colors);
 				
 				
 				
@@ -157,7 +157,7 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 				SDL_FillRect(
 					screen, 
 					&rect, 
-					SDL_MapRGB(screen->format, display[x][y]*16,0,0)
+					SDL_MapRGB(screen->format, colors[0],colors[1],colors[2])
 				);
 			}
 		}

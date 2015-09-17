@@ -66,5 +66,6 @@ int firefly_x(int firefly);
 int firefly_y(int firefly);
 int move_x(int direction);
 int move_y(int direction);
+void get_colors(int type,int tick, int* colors);
 
 #endif

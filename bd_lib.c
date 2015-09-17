@@ -185,4 +185,57 @@ int move_y(int direction)
 	if(direction == 4) return 0;
 	return 0;
 }
+								
+void get_colors(int type,int tick,int* colors)
+{
+	colors[0]=0;
+	colors[1]=0;
+	colors[2]=0;
+
+
+	switch(type)
+	{
+		case BD_DIRT:
+			colors[0]=94;
+			colors[1]=68;
+			colors[2]=36;
+			break;
+		case BD_BOULDER:
+			colors[0]=107;
+			colors[1]=99;
+			colors[2]=90;
+			break;
+		case BD_STEELWALL:
+			colors[0]=93;
+			colors[1]=93;
+			colors[2]=93;
+			break;
+		case BD_MAGICWALL:
+		case BD_WALL:
+			colors[0]=126;
+			colors[1]=126;
+			colors[2]=126;
+			break;
+		case BD_DIAMOND:
+			colors[0]=86+(4*((tick>>2)%20));
+			colors[1]=76;
+			colors[2]=66;
+			break;
+		case BD_ROCKFORD:
+			colors[0]=58;
+			colors[1]=53;
+			colors[2]=47+(8*((tick>>2)%20));
+			break;
+		case BD_FIREFLYr:
+		case BD_FIREFLYl:
+		case BD_FIREFLYt:
+		case BD_FIREFLYd:
+			colors[0]=132+(2*((tick>>2)%10));
+			colors[1]=132+(2*((tick>>2)%10));
+			colors[2]=132+(2*((tick>>2)%10));
+			break;
+	}
+}
+
+
 
