@@ -148,8 +148,8 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 						if(direction != 0)
 						{
 							if(
-								(bd_game->cavemap[x+move_x(direction)][y+move_y(direction)] == BD_SPACE)||
-								(bd_game->cavemap[x+move_x(direction)][y+move_y(direction)] == BD_DIRT)
+								(new_cavemap[x+move_x(direction)][y+move_y(direction)] == BD_SPACE)||
+								(new_cavemap[x+move_x(direction)][y+move_y(direction)] == BD_DIRT)
 							)
 						{
 							new_cavemap[x+move_x(direction)][y+move_y(direction)]=BD_ROCKFORD;
@@ -167,12 +167,12 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 					{
 						int dir = firefly_left(curr_type);
 
-						if(bd_game->cavemap[x+firefly_x(dir)][y+firefly_y(dir)] == BD_SPACE)
+						if(new_cavemap[x+firefly_x(dir)][y+firefly_y(dir)] == BD_SPACE)
 						{
 							new_cavemap[x+firefly_x(dir)][y+firefly_y(dir)]=dir;
 							new_cavemap[x][y]=BD_SPACE;
 						}
-						else if( bd_game->cavemap[x+firefly_x(curr_type)][y+firefly_y(curr_type)] == BD_SPACE)
+						else if( new_cavemap[x+firefly_x(curr_type)][y+firefly_y(curr_type)] == BD_SPACE)
 						{
 							new_cavemap[x+firefly_x(curr_type)][y+firefly_y(curr_type)]=curr_type;
 							new_cavemap[x][y]=BD_SPACE;
