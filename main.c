@@ -138,7 +138,7 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 				SDL_FillRect(
 					screen, 
 					&rect, 
-					SDL_MapRGB(screen->format, display[x][y]*18,0,0)
+					SDL_MapRGB(screen->format, display[x][y]*16,0,0)
 				);
 			}
 		}

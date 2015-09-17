@@ -3,6 +3,7 @@
 #include "bd_game.h"
 
 #define BD_UNCOVER_LOOP 69
+#define BD_START_DELAY 120
 
 extern int bd_cave_data[];
 extern int bd_cave_start_idx[];
@@ -135,6 +136,11 @@ void bd_game_process(struct bd_game_struct_t* bd_game)
 			int curr_type = bd_game->cavemap[x][y];
 			switch(curr_type)
 			{
+				case BD_INBOX:
+					if(bd_game->Tick == BD_START_DELAY)
+						new_cavemap[x][y]=BD_ROCKFORD;
+
+					break;
 				case BD_FIREFLYr:
 				case BD_FIREFLYl:
 				case BD_FIREFLYt:
@@ -158,7 +164,7 @@ void bd_game_process(struct bd_game_struct_t* bd_game)
 							new_cavemap[x][y]=firefly_right(curr_type);
 						}
 					}
-				break;
+					break;
 			}
 		}
 	}
@@ -185,21 +191,23 @@ void bd_game_render(struct bd_game_struct_t* bd_game,char display[CAVE_WIDTH][CA
 	{
 		for(int x = 0; x < CAVE_WIDTH; x++) 
 		{
+			int field = bd_game->cavemap[x][y];
+
+			if(bd_game->Tick < BD_START_DELAY)
+				if(field == BD_INBOX)
+					if(bd_game->Tick % 20 < 10)
+						field = BD_STEELWALL;
+
+
 			if(bd_game->Tick < BD_UNCOVER_LOOP)
 			{
 				if(bd_game->covered[x][y])
 				{
-					display[x][y]=BD_STEELWALL;
-				}
-				else
-				{
-					display[x][y]=bd_game->cavemap[x][y];
+					field=BD_STEELWALL;
 				}
 			}
-			else
-			{
-				display[x][y]=bd_game->cavemap[x][y];
-			}
+
+			display[x][y]=field;
 		}
 	}
 }
