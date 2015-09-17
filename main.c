@@ -1,6 +1,7 @@
 
 #include <stdio.h>
-#include <sys/time.h>
+#include <time.h>
+#include <stdlib.h>
 
 #include "bd_caves.h"
 #include "bd_lib.h"
@@ -12,6 +13,23 @@ static SDL_Surface* screen;
 
 #define SDL_ZOOM 15
 
+int keypressmap[4];
+int keymap;
+
+
+int getkey(int key)
+{
+	if(keypressmap[key] > 15)
+	{
+		return 1;
+	}
+	else if((keymap >> key) & 1)
+	{
+		keymap &= ~(1 << key);
+		return 1;
+	}
+	return 0;
+}
 
 
 
@@ -112,7 +130,22 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 					running = 0;
 					break;
 				case SDL_KEYUP:
-					direction = 0;
+					switch(ev.key.keysym.sym) 
+					{
+						case SDLK_UP:
+							keypressmap[0]=0;
+							break;
+						case SDLK_RIGHT:
+							keypressmap[1]=0;
+							break;
+						case SDLK_DOWN:
+							keypressmap[2]=0;
+							break;
+						case SDLK_LEFT:
+							keypressmap[3]=0;
+							break;
+						default: break;
+					}
 					break;
 				case SDL_KEYDOWN:
 					switch(ev.key.keysym.sym) 
@@ -121,22 +154,29 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 							running = 0;
 							break;
 						case SDLK_UP:
-							direction = 1;
+							keymap |= 1 << 0;
+							keypressmap[0]=1;
 							break;
 						case SDLK_RIGHT:
-							direction = 2;
+							keymap |= 1 << 1;
+							keypressmap[1]=1;
 							break;
 						case SDLK_DOWN:
-							direction = 3;
+							keymap |= 1 << 2;
+							keypressmap[2]=1;
 							break;
 						case SDLK_LEFT:
-							direction = 4;
+							keymap |= 1 << 3;
+							keypressmap[3]=1;
 							break;
 						default: break;
 					}
 				default: break;
 			}
 		}
+						
+		for(int i = 0; i < 4; i++)
+			if(keypressmap[i]>0)keypressmap[i]++;
 
 		bd_game_process(bd_game,direction);
 	

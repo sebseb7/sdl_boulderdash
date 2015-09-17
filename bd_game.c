@@ -1,6 +1,7 @@
 #include <stdlib.h>
 
 #include "bd_game.h"
+#include "main.h"
 
 #define BD_UNCOVER_LOOP 69
 #define BD_START_DELAY 120
@@ -97,14 +98,25 @@ struct bd_game_struct_t* bd_game_initialize(int level,int difficulty)
 	return bd_game;
 }
 
+static void explode(int map[CAVE_WIDTH][CAVE_HEIGHT],int x,int y)
+{
+
+	for(int dy=-1;dy<2;dy++)
+		for(int dx=-1;dx<2;dx++)
+			map[x+dx][y+dy]=BD_SPACE;
+
+
+}
+
 void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 {
 	int tick = bd_game->Tick++;
 
 
-	int move_tick = tick%13;
+	int move_tick = (tick-1)%13;
+	int fall_tick = tick%13;
 
-	int uncovered = 1;
+	//int uncovered = 1;
 
 	//printf("%i %i %i\n",tick,BD_UNCOVER_LOOP,move_tick);
 
@@ -116,7 +128,7 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 			int pos = random()%CAVE_WIDTH;
 			bd_game->covered[pos][line] = 0;
 		}
-		uncovered=0;
+		//uncovered=0;
 	}
 
 	int new_cavemap[CAVE_WIDTH][CAVE_HEIGHT];
@@ -134,6 +146,7 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 		for(int x = 0; x < CAVE_WIDTH; x++) 
 		{
 			int curr_type = bd_game->cavemap[x][y];
+			int fall=1;
 			switch(curr_type)
 			{
 				case BD_INBOX:
@@ -144,6 +157,25 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 				case BD_ROCKFORD:
 					if(move_tick ==0)
 					{
+
+						direction=0;
+						
+						if(getkey(1))
+						{
+							direction=2;
+						} 
+						else if(getkey(2))
+						{
+							direction=3;
+						}
+						else if(getkey(3))
+						{
+							direction=4;
+						}
+						else if(getkey(0))
+						{
+							direction=1;
+						};
 						
 						if(direction != 0)
 						{
@@ -180,6 +212,61 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 						else
 						{
 							new_cavemap[x][y]=firefly_right(curr_type);
+						}
+					}
+					break;
+				case BD_BOULDERfall:
+				case BD_DIAMONDfall:
+					if(fall_tick == 0)
+					{
+						if(
+							(new_cavemap[x][y+1] == BD_FIREFLYt)||
+							(new_cavemap[x][y+1] == BD_FIREFLYl)||
+							(new_cavemap[x][y+1] == BD_FIREFLYr)||
+							(new_cavemap[x][y+1] == BD_FIREFLYd)||
+							(new_cavemap[x][y+1] == BD_ROCKFORD)
+							)
+						{
+							explode(new_cavemap,x,y+1);
+						}
+						else if(
+							(new_cavemap[x][y+1] != BD_SPACE)
+							)
+						{
+							new_cavemap[x][y]-=1;
+						}
+						fall=0;
+					}
+				case BD_BOULDER:
+				case BD_DIAMOND:
+					if(fall_tick == 0)
+					{
+						if(
+							(new_cavemap[x][y+1] == BD_SPACE)
+							)
+						{
+							new_cavemap[x][y+1]=curr_type+fall;
+							new_cavemap[x][y]=BD_SPACE;
+						}
+						else if(
+							((new_cavemap[x][y+1] == BD_BOULDER)||(new_cavemap[x][y+1] == BD_DIAMOND))&&
+							(new_cavemap[x-1][y+1] == BD_SPACE)&&
+							(new_cavemap[x-1][y] == BD_SPACE)
+
+						)
+						{
+							new_cavemap[x-1][y]=curr_type+fall;
+							new_cavemap[x][y]=BD_SPACE;
+						}
+						else if(
+							((new_cavemap[x][y+1] == BD_BOULDER)||(new_cavemap[x][y+1] == BD_DIAMOND))&&
+							(new_cavemap[x+1][y+1] == BD_SPACE)&&
+							(new_cavemap[x+1][y] == BD_SPACE)
+
+						)
+						{
+							new_cavemap[x+1][y]=curr_type+fall;
+							new_cavemap[x][y]=BD_SPACE;
 						}
 					}
 					break;

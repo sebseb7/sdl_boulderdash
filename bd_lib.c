@@ -201,6 +201,7 @@ void get_colors(int type,int tick,int* colors)
 			colors[2]=36;
 			break;
 		case BD_BOULDER:
+		case BD_BOULDERfall:
 			colors[0]=107;
 			colors[1]=99;
 			colors[2]=90;
@@ -217,11 +218,13 @@ void get_colors(int type,int tick,int* colors)
 			colors[2]=126;
 			break;
 		case BD_DIAMOND:
+		case BD_DIAMONDfall:
 			colors[0]=86+(4*((tick>>2)%20));
 			colors[1]=76;
 			colors[2]=66;
 			break;
 		case BD_ROCKFORD:
+		case BD_ROCKFORDgrab:
 			colors[0]=58;
 			colors[1]=53;
 			colors[2]=47+(8*((tick>>2)%20));
