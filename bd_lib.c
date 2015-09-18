@@ -185,7 +185,9 @@ int move_y(int direction)
 	if(direction == 4) return 0;
 	return 0;
 }
-								
+
+static int sinlut[] = {5,8,10,10,8,5,2,0,0,2,5};
+
 void get_colors(int type,int tick,int* colors)
 {
 	colors[0]=0;
@@ -219,23 +221,23 @@ void get_colors(int type,int tick,int* colors)
 			break;
 		case BD_DIAMOND:
 		case BD_DIAMONDfall:
-			colors[0]=86+(4*((tick>>2)%20));
+			colors[0]=86+(4*sinlut[(tick>>2)%10]);
 			colors[1]=76;
-			colors[2]=66;
+			colors[2]=86+(4*sinlut[((tick+5)>>2)%10]);
 			break;
 		case BD_ROCKFORD:
 		case BD_ROCKFORDgrab:
 			colors[0]=58;
 			colors[1]=53;
-			colors[2]=47+(8*((tick>>2)%20));
+			colors[2]=47+(8*sinlut[(tick>>2)%10]);
 			break;
 		case BD_FIREFLYr:
 		case BD_FIREFLYl:
 		case BD_FIREFLYt:
 		case BD_FIREFLYd:
-			colors[0]=132+(2*((tick>>2)%10));
-			colors[1]=132+(2*((tick>>2)%10));
-			colors[2]=132+(2*((tick>>2)%10));
+			colors[0]=132+(4*sinlut[(tick>>2)%10]);
+			colors[1]=132+(4*sinlut[(tick>>2)%10]);
+			colors[2]=132+(4*sinlut[(tick>>2)%10]);
 			break;
 		case BD_EXPLOSION1:
 		case BD_EXPLOSION2:
