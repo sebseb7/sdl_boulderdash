@@ -1,3 +1,7 @@
+
+![](https://raw.githubusercontent.com/sebseb7/boulderdash_test/master/bd.gif)
+
+
 ```
 ########################################
 #.*..*..*......*.**W..MMM.MMM.MMM#.....#
