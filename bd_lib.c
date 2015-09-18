@@ -237,6 +237,14 @@ void get_colors(int type,int tick,int* colors)
 			colors[1]=132+(2*((tick>>2)%10));
 			colors[2]=132+(2*((tick>>2)%10));
 			break;
+		case BD_EXPLOSION1:
+		case BD_EXPLOSION2:
+		case BD_EXPLOSION3:
+		case BD_EXPLOSION4:
+		case BD_EXPLOSION5:
+			colors[0]=255;
+			colors[1]=((BD_EXPLOSION5-type)*50);
+			colors[2]=0;
 	}
 }
 

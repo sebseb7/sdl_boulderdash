@@ -103,7 +103,7 @@ static void explode(int map[CAVE_WIDTH][CAVE_HEIGHT],int x,int y)
 
 	for(int dy=-1;dy<2;dy++)
 		for(int dx=-1;dx<2;dx++)
-			map[x+dx][y+dy]=BD_SPACE;
+			map[x+dx][y+dy]=BD_EXPLOSION1;
 
 
 }
@@ -115,6 +115,7 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 
 	int move_tick = (tick-1)%13;
 	int fall_tick = tick%13;
+	int expl_tick = tick%5;
 
 	//int uncovered = 1;
 
@@ -149,6 +150,21 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 			int fall=1;
 			switch(curr_type)
 			{
+				case BD_EXPLOSION1:
+				case BD_EXPLOSION2:
+				case BD_EXPLOSION3:
+				case BD_EXPLOSION4:
+					if(expl_tick ==0)
+					{
+						new_cavemap[x][y]=curr_type+1;
+					}
+					break;
+				case BD_EXPLOSION5:
+					if(expl_tick ==0)
+					{
+						new_cavemap[x][y]=BD_SPACE;
+					}
+					break;
 				case BD_INBOX:
 					if(bd_game->Tick == BD_START_DELAY)
 						new_cavemap[x][y]=BD_ROCKFORD;
