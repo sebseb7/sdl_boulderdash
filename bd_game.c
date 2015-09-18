@@ -114,9 +114,9 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 	int tick = bd_game->Tick++;
 
 
-	int move_tick = (tick-1)%13;
-	int fall_tick = tick%13;
-	int expl_tick = tick%5;
+	int move_tick = (tick-1)%8;
+	int fall_tick = tick%8;
+	int expl_tick = tick%3;
 
 	//int uncovered = 1;
 
@@ -308,7 +308,7 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 					if(fall_tick == 0)
 					{
 						if(
-								(new_cavemap[x][y+1] == BD_SPACE)
+								new_cavemap[x][y+1] == BD_SPACE
 						)
 						{
 							new_cavemap[x][y+1]=curr_type+fall;

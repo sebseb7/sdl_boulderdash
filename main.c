@@ -11,7 +11,7 @@
 
 static SDL_Surface* screen;
 
-#define SDL_ZOOM 15
+#define SDL_ZOOM 30
 
 int keypressmap[4];
 int keymap;
@@ -203,7 +203,7 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 		}
 		
 		SDL_Flip(screen);
-		SDL_Delay(10);
+		SDL_Delay(16);
 
 
 	}
