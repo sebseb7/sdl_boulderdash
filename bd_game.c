@@ -251,19 +251,33 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 					{
 						int dir = firefly_left(curr_type);
 
-						if(new_cavemap[x+firefly_x(dir)][y+firefly_y(dir)] == BD_SPACE)
+						for(int di = 0; di<4; di++)
 						{
-							new_cavemap[x+firefly_x(dir)][y+firefly_y(dir)]=dir;
-							new_cavemap[x][y]=BD_SPACE;
+							if(
+								(new_cavemap[x+move_x(di)][y+move_y(di)] == BD_ROCKFORD)||
+								(new_cavemap[x+move_x(di)][y+move_y(di)] == BD_ROCKFORDgrab)
+							)
+							{
+								explode(new_cavemap,x,y);
+							}
 						}
-						else if( new_cavemap[x+firefly_x(curr_type)][y+firefly_y(curr_type)] == BD_SPACE)
+
+						if(new_cavemap[x][y] != BD_EXPLOSION1)
 						{
-							new_cavemap[x+firefly_x(curr_type)][y+firefly_y(curr_type)]=curr_type;
-							new_cavemap[x][y]=BD_SPACE;
-						}
-						else
-						{
-							new_cavemap[x][y]=firefly_right(curr_type);
+							if(new_cavemap[x+firefly_x(dir)][y+firefly_y(dir)] == BD_SPACE)
+							{
+								new_cavemap[x+firefly_x(dir)][y+firefly_y(dir)]=dir;
+								new_cavemap[x][y]=BD_SPACE;
+							}
+							else if( new_cavemap[x+firefly_x(curr_type)][y+firefly_y(curr_type)] == BD_SPACE)
+							{
+								new_cavemap[x+firefly_x(curr_type)][y+firefly_y(curr_type)]=curr_type;
+								new_cavemap[x][y]=BD_SPACE;
+							}
+							else
+							{
+								new_cavemap[x][y]=firefly_right(curr_type);
+							}
 						}
 					}
 					break;
