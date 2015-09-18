@@ -103,7 +103,8 @@ static void explode(int map[CAVE_WIDTH][CAVE_HEIGHT],int x,int y)
 
 	for(int dy=-1;dy<2;dy++)
 		for(int dx=-1;dx<2;dx++)
-			map[x+dx][y+dy]=BD_EXPLOSION1;
+			if(map[x+dx][y+dy]!=BD_STEELWALL)
+				map[x+dx][y+dy]=BD_EXPLOSION1;
 
 
 }
