@@ -12,7 +12,7 @@ clean:
 
 
 bd_test: main.c bd_lib.c bd_game.c bd_caves.h bd_game.h Makefile 
-	@$(COMPILER) $(FLAGS) $(LDFLAGS) main.c bd_lib.c bd_game.c -o bd_test 
+	@$(COMPILER) $(FLAGS) main.c bd_lib.c bd_game.c $(LDFLAGS) -o bd_test 
 
 .PHONY : clean all 
 
