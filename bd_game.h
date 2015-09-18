@@ -16,6 +16,7 @@ struct bd_game_struct_t
 	int DiamondsRequired;
 	int CaveTime;
 	int* Colors;
+	int MagicWallActive;
 	int MagicWallTime;
 	int AmoebaTime;
 	char covered[CAVE_WIDTH][CAVE_HEIGHT];

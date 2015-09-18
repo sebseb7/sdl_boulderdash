@@ -309,7 +309,7 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 					{
 						if(
 								(new_cavemap[x][y+1] == BD_SPACE)
-						  )
+						)
 						{
 							new_cavemap[x][y+1]=curr_type+fall;
 							new_cavemap[x][y]=BD_SPACE;
@@ -319,7 +319,7 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 								(new_cavemap[x-1][y+1] == BD_SPACE)&&
 								(new_cavemap[x-1][y] == BD_SPACE)
 
-							   )
+							)
 						{
 							new_cavemap[x-1][y]=curr_type+fall;
 							new_cavemap[x][y]=BD_SPACE;
@@ -329,13 +329,26 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 								(new_cavemap[x+1][y+1] == BD_SPACE)&&
 								(new_cavemap[x+1][y] == BD_SPACE)
 
-							   )
+							)
 						{
 							new_cavemap[x+1][y]=curr_type+fall;
 							new_cavemap[x][y]=BD_SPACE;
 						}
+						else if(
+								(new_cavemap[x][y+1] == BD_MAGICWALL)&&
+								((new_cavemap[x][y] == BD_BOULDERfall)||
+								(new_cavemap[x][y] == BD_BOULDER))
+						)
+						{
+							bd_game->MagicWallActive=1;
+						}
 					}
 					break;
+				case BD_MAGICWALL:
+					if(bd_game->MagicWallActive == 1)
+					{
+						new_cavemap[x][y]=BD_MAGICWALLactive;
+					}
 			}
 		}
 	}

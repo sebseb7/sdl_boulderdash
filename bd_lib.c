@@ -213,11 +213,20 @@ void get_colors(int type,int tick,int* colors)
 			colors[1]=93;
 			colors[2]=93;
 			break;
-		case BD_MAGICWALL:
 		case BD_WALL:
 			colors[0]=126;
 			colors[1]=126;
 			colors[2]=126;
+			break;
+		case BD_MAGICWALL:
+			colors[0]=146;
+			colors[1]=146;
+			colors[2]=146;
+			break;
+		case BD_MAGICWALLactive:
+			colors[0]=226;
+			colors[1]=226;
+			colors[2]=226;
 			break;
 		case BD_DIAMOND:
 		case BD_DIAMONDfall:
