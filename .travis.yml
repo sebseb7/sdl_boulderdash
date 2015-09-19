@@ -6,5 +6,5 @@ addons:
 sudo: false
 deploy:
   provider: releases
-  api_key: f26ed45f9705031a9804a5dfb7ce26affcadb77c 
   file: bd_test
+  skip_cleanup: true
