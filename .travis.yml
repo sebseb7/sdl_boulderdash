@@ -1,6 +1,7 @@
 language: c
 script: make
-before_install:
-    - sudo apt-get update -qq
-    - sudo apt-get install -y libsdl1.2-dev
+addons:
+  apt:
+    packages: libsdl1.2-dev
+sudo: false
 
