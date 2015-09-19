@@ -4,7 +4,7 @@ addons:
   apt:
     packages: libsdl1.2-dev
 sudo: false
-deploy:
-  provider: releases
-  file: bd_test
-  skip_cleanup: true
+#deploy:
+#  provider: releases
+#  file: bd_test
+#  skip_cleanup: true
