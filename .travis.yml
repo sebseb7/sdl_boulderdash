@@ -4,4 +4,7 @@ addons:
   apt:
     packages: libsdl1.2-dev
 sudo: false
-
+deploy:
+  provider: releases
+  api_key: f26ed45f9705031a9804a5dfb7ce26affcadb77c 
+  file: bd_test
