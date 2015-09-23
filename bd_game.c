@@ -143,7 +143,7 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 	}
 
 
-	for(int y = 1; y < CAVE_HEIGHT-1; y++) 
+	for(int y =CAVE_HEIGHT-1; y>=0; y--) 
 	{
 		for(int x = 0; x < CAVE_WIDTH; x++) 
 		{
@@ -315,11 +315,18 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 					if(fall_tick == 0)
 					{
 						if(
+								((new_cavemap[x][y] == BD_BOULDER)||(new_cavemap[x][y] == BD_DIAMOND))&&
+								(new_cavemap[x][y+1] == BD_SPACE)
+						)
+						{
+							new_cavemap[x][y]=curr_type+fall;
+						}
+						else if(
 								new_cavemap[x][y+1] == BD_SPACE
 						)
 						{
+							new_cavemap[x][y] = BD_SPACE;
 							new_cavemap[x][y+1]=curr_type+fall;
-							new_cavemap[x][y]=BD_SPACE;
 						}
 						else if(
 								((new_cavemap[x][y+1] == BD_BOULDER)||(new_cavemap[x][y+1] == BD_DIAMOND))&&
