@@ -224,9 +224,9 @@ void get_colors(int type,int tick,int* colors)
 			colors[2]=146;
 			break;
 		case BD_MAGICWALLactive:
-			colors[0]=226;
-			colors[1]=226;
-			colors[2]=226;
+			colors[0]=100+(13*sinlut[(tick>>2)%10]);
+			colors[1]=100+(13*sinlut[(tick>>2)%10]);
+			colors[2]=100+(13*sinlut[(tick>>2)%10]);
 			break;
 		case BD_DIAMOND:
 		case BD_DIAMONDfall:
@@ -244,9 +244,9 @@ void get_colors(int type,int tick,int* colors)
 		case BD_FIREFLYl:
 		case BD_FIREFLYt:
 		case BD_FIREFLYd:
-			colors[0]=132+(4*sinlut[(tick>>2)%10]);
-			colors[1]=132+(4*sinlut[(tick>>2)%10]);
-			colors[2]=132+(4*sinlut[(tick>>2)%10]);
+			colors[0]=32+(20*sinlut[(tick>>1)%10]);
+			colors[1]=32+(20*sinlut[(tick>>1)%10]);
+			colors[2]=32+(20*sinlut[(tick>>1)%10]);
 			break;
 		case BD_EXPLOSION1:
 		case BD_EXPLOSION2:

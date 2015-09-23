@@ -291,13 +291,20 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 								(new_cavemap[x][y+1] == BD_FIREFLYr)||
 								(new_cavemap[x][y+1] == BD_FIREFLYd)||
 								(new_cavemap[x][y+1] == BD_ROCKFORD)
-						  )
+						)
 						{
 							explode(new_cavemap,x,y+1);
 						}
 						else if(
-								(new_cavemap[x][y+1] != BD_SPACE)
-							   )
+								(curr_type == BD_BOULDERfall)&&
+								(new_cavemap[x][y+1] == BD_MAGICWALL)
+							)
+						{
+						}
+						else if(
+								(new_cavemap[x][y+1] != BD_SPACE)&&
+								(new_cavemap[x][y+1] != BD_MAGICWALLactive)
+							)
 						{
 							new_cavemap[x][y]-=1;
 						}
@@ -341,6 +348,15 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 						)
 						{
 							bd_game->MagicWallActive=1;
+						}
+						else if(
+								(new_cavemap[x][y+1] == BD_MAGICWALLactive)&&
+								(new_cavemap[x][y] == BD_BOULDERfall)&&
+								(new_cavemap[x][y+2] == BD_SPACE)
+						)
+						{
+							new_cavemap[x][y+2]=BD_DIAMONDfall;
+							new_cavemap[x][y]=BD_SPACE;
 						}
 					}
 					break;
