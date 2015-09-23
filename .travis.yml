@@ -11,3 +11,4 @@ deploy:
   file: bd.exe
   on:
     repo: sebseb7/boulderdash_test
+    all_branches: true
