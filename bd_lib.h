@@ -19,6 +19,7 @@ enum {
 	BD_SPACE,
 	BD_INBOX,
 	BD_OUTBOX,
+	BD_OUTBOXactive,
 	BD_AMOEBA,
 	BD_ROCKFORD,
 	BD_ROCKFORDgrab,

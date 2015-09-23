@@ -14,6 +14,9 @@ struct bd_game_struct_t
 	int DiamonValue;
 	int DiamonValueBonus;
 	int DiamondsRequired;
+	int DiamondsCollected;
+	int Won;
+	int Lost;
 	int CaveTime;
 	int* Colors;
 	int MagicWallActive;

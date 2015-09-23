@@ -30,6 +30,7 @@ struct bd_game_struct_t* bd_game_initialize(int level,int difficulty)
 
 
 	bd_game->Tick=0;
+	bd_game->DiamondsCollected=0;
 	bd_game->Difficulty=difficulty;
 	bd_game->DiamonValue=cavedata->DiamonValue;
 	bd_game->DiamonValueBonus=cavedata->DiamonValueBonus;
@@ -118,6 +119,11 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 	int fall_tick = tick%8;
 	int expl_tick = tick%3;
 
+	if(bd_game->Won ==1)
+	{
+		move_tick=1;
+		fall_tick=1;
+	}
 	//int uncovered = 1;
 
 	//printf("%i %i %i\n",tick,BD_UNCOVER_LOOP,move_tick);
@@ -151,6 +157,12 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 			int fall=1;
 			switch(curr_type)
 			{
+				case BD_OUTBOX:
+					if(bd_game->DiamondsCollected >= bd_game->DiamondsRequired)
+					{
+						new_cavemap[x][y]=BD_OUTBOXactive;
+					}
+					break;
 				case BD_EXPLOSION1:
 				case BD_EXPLOSION2:
 				case BD_EXPLOSION3:
@@ -205,6 +217,14 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 								new_cavemap[x+move_x(direction)][y+move_y(direction)]=BD_ROCKFORD;
 								new_cavemap[x][y]=BD_SPACE;
 							}
+							if(
+									new_cavemap[x+move_x(direction)][y+move_y(direction)] == BD_OUTBOXactive
+							)
+							{
+								new_cavemap[x+move_x(direction)][y+move_y(direction)]=BD_ROCKFORD;
+								new_cavemap[x][y]=BD_SPACE;
+								bd_game->Won=1;
+							}
 							else if(
 									(new_cavemap[x+move_x(direction)][y+move_y(direction)] == BD_DIAMOND)||
 									(new_cavemap[x+move_x(direction)][y+move_y(direction)] == BD_DIAMONDfall)
@@ -214,6 +234,7 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 								{
 									new_cavemap[x+move_x(direction)][y+move_y(direction)] = BD_SPACE;
 									new_cavemap[x][y]=BD_ROCKFORD;
+									bd_game->DiamondsCollected++;
 								}
 								else
 								{
@@ -259,6 +280,7 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 							)
 							{
 								explode(new_cavemap,x,y);
+								bd_game->Lost=1;
 							}
 						}
 
@@ -281,6 +303,7 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 						}
 					}
 					break;
+				//there must still be a bug, oberserved a resting diamond on top a freestanding boulder
 				case BD_BOULDERfall:
 				case BD_DIAMONDfall:
 					if(fall_tick == 0)
@@ -293,7 +316,10 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 								(new_cavemap[x][y+1] == BD_ROCKFORD)
 						)
 						{
+							if(new_cavemap[x][y+1] == BD_ROCKFORD)	
+								bd_game->Lost=1;
 							explode(new_cavemap,x,y+1);
+								
 						}
 						else if(
 								(curr_type == BD_BOULDERfall)&&

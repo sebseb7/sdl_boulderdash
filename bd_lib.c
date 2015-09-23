@@ -208,6 +208,12 @@ void get_colors(int type,int tick,int* colors)
 			colors[1]=99;
 			colors[2]=90;
 			break;
+		case BD_OUTBOXactive:
+			colors[0]=93+(4*sinlut[(tick>>2)%10]);
+			colors[1]=93+(4*sinlut[(tick>>2)%10]);
+			colors[2]=93+(4*sinlut[(tick>>2)%10]);
+			break;
+		case BD_OUTBOX:
 		case BD_STEELWALL:
 			colors[0]=93;
 			colors[1]=93;
