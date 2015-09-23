@@ -203,6 +203,10 @@ void get_colors(int type,int tick,int* colors)
 			colors[2]=36;
 			break;
 		case BD_BOULDER:
+			colors[0]=07;
+			colors[1]=99;
+			colors[2]=90;
+			break;
 		case BD_BOULDERfall:
 			colors[0]=107;
 			colors[1]=99;
@@ -235,6 +239,10 @@ void get_colors(int type,int tick,int* colors)
 			colors[2]=100+(13*sinlut[(tick>>2)%10]);
 			break;
 		case BD_DIAMOND:
+			colors[0]=86+(4*sinlut[(tick>>2)%10]);
+			colors[1]=6;
+			colors[2]=86+(4*sinlut[((tick+5)>>2)%10]);
+			break;
 		case BD_DIAMONDfall:
 			colors[0]=86+(4*sinlut[(tick>>2)%10]);
 			colors[1]=76;

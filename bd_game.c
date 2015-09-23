@@ -408,15 +408,15 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 						}
 						else if(
 								(new_cavemap[x][y+1] == BD_MAGICWALL)&&
-								((new_cavemap[x][y] == BD_BOULDERfall)||
-								(new_cavemap[x][y] == BD_BOULDER))
+								(new_cavemap[x][y] == BD_BOULDERfall)
 						)
 						{
 							bd_game->MagicWallActive=1;
 						}
 						else if(
 								(new_cavemap[x][y+1] == BD_MAGICWALLactive)&&
-								(new_cavemap[x][y] == BD_BOULDERfall)&&
+								((new_cavemap[x][y] == BD_DIAMONDfall)||
+								(new_cavemap[x][y] == BD_BOULDERfall))&&
 								(new_cavemap[x][y+2] == BD_SPACE)
 						)
 						{
