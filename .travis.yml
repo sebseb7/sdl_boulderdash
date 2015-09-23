@@ -4,7 +4,7 @@ addons:
   apt:
     packages: 
     - libsdl1.2-dev 
-    - gcc-mingw-w64-i686
+    - gcc-mingw-w64
 sudo: false
 #deploy:
 #  provider: releases
