@@ -29,8 +29,11 @@ struct bd_game_struct_t* bd_game_initialize(int level,int difficulty)
 
 
 
+	bd_game->Won=0;
+	bd_game->Lost=0;
 	bd_game->Tick=0;
 	bd_game->DiamondsCollected=0;
+	bd_game->Cave=level;
 	bd_game->Difficulty=difficulty;
 	bd_game->DiamonValue=cavedata->DiamonValue;
 	bd_game->DiamonValueBonus=cavedata->DiamonValueBonus;
@@ -119,10 +122,39 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 	int fall_tick = tick%8;
 	int expl_tick = tick%3;
 
-	if(bd_game->Won ==1)
+	if(bd_game->Won > 0)
 	{
 		move_tick=1;
 		fall_tick=1;
+		
+		bd_game->Won++;
+
+		
+		if(bd_game->Won == 100)
+		{
+			int old_cave = bd_game->Cave;
+			int old_difficulty = bd_game->Difficulty;
+
+			old_cave++;
+
+			free(bd_game);
+			bd_game = bd_game_initialize(old_cave,old_difficulty); 
+		}
+	}
+
+	if(bd_game->Lost > 0)
+	{
+		bd_game->Lost++;
+
+		if(bd_game->Lost == 100)
+		{
+			int old_cave = bd_game->Cave;
+			int old_difficulty = bd_game->Difficulty;
+
+			free(bd_game);
+
+			bd_game = bd_game_initialize(old_cave,old_difficulty); 
+		}
 	}
 	//int uncovered = 1;
 

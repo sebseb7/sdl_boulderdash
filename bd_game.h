@@ -10,6 +10,7 @@
 struct bd_game_struct_t 
 {
 	int Tick;
+	int Cave;
 	int Difficulty;
 	int DiamonValue;
 	int DiamonValueBonus;
