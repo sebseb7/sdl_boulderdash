@@ -2,7 +2,7 @@ language: c
 script: make
 addons:
   apt:
-    packages: libsdl1.2-dev
+    packages: libsdl1.2-dev gcc-mingw-w64-i686
 sudo: false
 #deploy:
 #  provider: releases

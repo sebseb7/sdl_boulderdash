@@ -133,7 +133,7 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 	{
 		for(int line=0;line < CAVE_HEIGHT;line++)
 		{
-			int pos = random()%CAVE_WIDTH;
+			int pos = rand()%CAVE_WIDTH;
 			bd_game->covered[pos][line] = 0;
 		}
 		//uncovered=0;
