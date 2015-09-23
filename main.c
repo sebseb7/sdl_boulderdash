@@ -11,7 +11,7 @@
 
 static SDL_Surface* screen;
 
-#define SDL_ZOOM 30
+#define SDL_ZOOM 25
 
 int keypressmap[4];
 int keymap;
