@@ -286,7 +286,7 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 							)
 							{
 								new_cavemap[x+move_x(direction)][y+move_y(direction)] = BD_SPACE;
-								new_cavemap[x][y]=BD_ROCKFORD;
+								new_cavemap[x+move_x(direction)][y+move_y(direction)] = BD_ROCKFORD;
 								bd_game->DiamondsCollected++;
 							}
 							else if(
