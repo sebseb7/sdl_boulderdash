@@ -197,6 +197,11 @@ void get_colors(int type,int tick,int* colors)
 
 	switch(type)
 	{
+		case BD_AMOEBA:
+			colors[0]=6;
+			colors[1]=150+(6*sinlut[(tick>>2)%10]);
+			colors[2]=6;
+			break;
 		case BD_DIRT:
 			colors[0]=94;
 			colors[1]=68;

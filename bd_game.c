@@ -42,6 +42,7 @@ struct bd_game_struct_t* bd_game_initialize(int level,int difficulty)
 	bd_game->Colors=cavedata->Colors;
 	bd_game->MagicWallTime=cavedata->MagicWallTime;
 	bd_game->AmoebaTime=cavedata->AmoebaTime;
+	bd_game->AmoebaSpace=1;
 	
 	
 	
@@ -180,6 +181,7 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 		}
 	}
 
+	int amoeba_possible=0;
 
 	for(int y =CAVE_HEIGHT-1; y>=0; y--) 
 	{
@@ -189,6 +191,27 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 			int fall=1;
 			switch(curr_type)
 			{
+				case BD_AMOEBA:
+						if(bd_game->AmoebaSpace==0)
+						{
+							new_cavemap[x][y]=BD_DIAMOND;
+						}
+						else
+						for(int dir = 1;dir<5;dir++)
+						{
+							if(
+									(new_cavemap[x+move_x(dir)][y+move_y(dir)] == BD_SPACE)||
+									(new_cavemap[x+move_x(dir)][y+move_y(dir)] == BD_DIRT)
+							)
+							{
+								amoeba_possible++;
+								if(rand()%350==0)
+								{
+									new_cavemap[x+move_x(dir)][y+move_y(dir)]=BD_AMOEBA;
+								}
+							}
+						}
+					break;
 				case BD_OUTBOX:
 					if(bd_game->DiamondsCollected >= bd_game->DiamondsRequired)
 					{
@@ -435,6 +458,7 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 	}
 
 
+	bd_game->AmoebaSpace=amoeba_possible;
 
 
 
