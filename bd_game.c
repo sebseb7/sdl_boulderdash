@@ -285,16 +285,9 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 									(new_cavemap[x+move_x(direction)][y+move_y(direction)] == BD_DIAMONDfall)
 							)
 							{
-								if(curr_type == BD_ROCKFORDgrab)
-								{
-									new_cavemap[x+move_x(direction)][y+move_y(direction)] = BD_SPACE;
-									new_cavemap[x][y]=BD_ROCKFORD;
-									bd_game->DiamondsCollected++;
-								}
-								else
-								{
-									new_cavemap[x][y]=BD_ROCKFORDgrab;
-								}
+								new_cavemap[x+move_x(direction)][y+move_y(direction)] = BD_SPACE;
+								new_cavemap[x][y]=BD_ROCKFORD;
+								bd_game->DiamondsCollected++;
 							}
 							else if(
 									(new_cavemap[x+move_x(direction)][y] == BD_BOULDER)&&
