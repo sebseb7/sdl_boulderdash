@@ -119,7 +119,7 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 	int tick = bd_game->Tick++;
 
 
-	int move_tick = (tick)%8;
+	int move_tick = (tick-1)%8;
 	int fall_tick = tick%8;
 	int expl_tick = tick%3;
 
@@ -137,6 +137,16 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 			int old_difficulty = bd_game->Difficulty;
 
 			old_cave++;
+			if(old_cave==4)
+			{
+				old_cave=0;
+				old_difficulty++;
+			}
+			if(old_difficulty==5)
+			{
+				old_cave=0;
+				old_difficulty=0;
+			}
 
 			free(bd_game);
 			bd_game = bd_game_initialize(old_cave,old_difficulty); 
@@ -205,7 +215,7 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 							)
 							{
 								amoeba_possible++;
-								if(rand()%350==0)
+								if((bd_game->Tick>BD_START_DELAY)&&(rand()%450==0))
 								{
 									new_cavemap[x+move_x(dir)][y+move_y(dir)]=BD_AMOEBA;
 								}
@@ -329,6 +339,10 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 							{
 								explode(new_cavemap,x,y);
 								bd_game->Lost=1;
+							}
+							if(new_cavemap[x+move_x(di)][y+move_y(di)] == BD_AMOEBA)
+							{
+								explode(new_cavemap,x,y);
 							}
 						}
 
