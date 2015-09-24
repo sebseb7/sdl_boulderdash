@@ -119,7 +119,7 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 	int tick = bd_game->Tick++;
 
 
-	int move_tick = (tick-1)%8;
+	int move_tick = (tick)%8;
 	int fall_tick = tick%8;
 	int expl_tick = tick%3;
 
