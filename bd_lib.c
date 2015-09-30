@@ -247,9 +247,9 @@ void get_colors(int type,int tick,int* colors)
 			break;
 		case BD_ROCKFORD:
 		case BD_ROCKFORDgrab:
-			colors[0]=58;
-			colors[1]=53;
-			colors[2]=47+(8*sinlut[(tick>>2)%10]);
+			colors[0]=158;
+			colors[1]=90+(15*sinlut[(tick>>2)%10]);
+			colors[2]=53;
 			break;
 		case BD_FIREFLYr:
 		case BD_FIREFLYl:
