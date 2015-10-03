@@ -24,6 +24,7 @@ struct bd_game_struct_t
 	int MagicWallTime;
 	int AmoebaTime;
 	int AmoebaSpace;
+	int Intermission;
 	char covered[CAVE_WIDTH][CAVE_HEIGHT];
 	int cavemap[CAVE_WIDTH][CAVE_HEIGHT];
 } __attribute__ ((packed));
