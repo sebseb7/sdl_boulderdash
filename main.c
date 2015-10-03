@@ -41,7 +41,7 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 	screen = SDL_SetVideoMode(CAVE_WIDTH*SDL_ZOOM,CAVE_HEIGHT*SDL_ZOOM,32, SDL_SWSURFACE | SDL_DOUBLEBUF);
 
 	int curr_level = 0;
-	int curr_cave = 4;
+	int curr_cave = 0;
 
 
 	struct bd_game_struct_t* bd_game = bd_game_initialize(curr_cave,curr_level);
