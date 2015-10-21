@@ -7,9 +7,7 @@
 #include "bd_lib.h"
 #include "bd_game.h"
 
-#include <SDL/SDL.h>
-
-static SDL_Surface* screen;
+#include <SDL.h>
 
 #define SDL_ZOOM 25
 
@@ -37,95 +35,26 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 {
 	srand(time(NULL));
 
+	SDL_Window* window = SDL_CreateWindow( "Boudlerdash", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, CAVE_WIDTH*SDL_ZOOM, CAVE_HEIGHT*SDL_ZOOM, SDL_WINDOW_SHOWN );
+	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	SDL_Texture* texture = SDL_CreateTexture(renderer,SDL_PIXELFORMAT_ARGB8888,SDL_TEXTUREACCESS_STATIC,CAVE_WIDTH*SDL_ZOOM, CAVE_HEIGHT*SDL_ZOOM);
 
-	screen = SDL_SetVideoMode(CAVE_WIDTH*SDL_ZOOM,CAVE_HEIGHT*SDL_ZOOM,32, SDL_SWSURFACE | SDL_DOUBLEBUF);
+	uint32_t pixels[CAVE_HEIGHT*SDL_ZOOM][CAVE_WIDTH*SDL_ZOOM];
+	char display[CAVE_WIDTH][CAVE_HEIGHT];
 
 	int curr_level = 0;
 	int curr_cave = 0;
-
-
 	struct bd_game_struct_t* bd_game = bd_game_initialize(curr_cave,curr_level);
-
-/*
-	int idxtest=0;
-	for(int cave=0;cave<bd_caves;cave++)
-	{
-		int level=0;
-
-		if(idxtest != bd_cave_start_idx[cave])
-		{
-			printf("%i %i\n",idxtest,bd_cave_start_idx[cave]);
-			return 1;
-		}
-
-		idxtest+=sizeof(struct cave_struct_t)/sizeof(int);
-
-		int field[CAVE_WIDTH][CAVE_HEIGHT];
-		
-		idxtest+=render_field(cave,level,field);
-
-		for(int y = 0; y < CAVE_HEIGHT; y++) {
-			for(int x = 0; x < CAVE_WIDTH; x++) {
-
-				switch(field[x][y])
-				{
-					case 0:
-						printf("E");
-						break;
-					case BD_BOULDER:
-						printf("\033[1;30m*\033[0m");
-						break;
-					case BD_SPACE:
-						printf(" ");
-						break;
-					case BD_FIREFLYl:
-					case BD_FIREFLYr:
-						printf("\033[1;33m@\033[0m");
-						break;
-					case	BD_DIAMOND:
-						printf("\033[1;36m$\033[0m");
-						break;
-					case BD_INBOX:
-						printf("X");
-						break;
-					case BD_OUTBOX:
-						printf("H");
-						break;
-					case BD_WALL:
-						printf("W");
-						break;
-					case BD_STEELWALL:
-						printf("\033[0;34m#\033[0m");
-						break;
-					case BD_DIRT:
-						printf(".");
-						break;
-					case BD_MAGICWALL:
-						printf("\033[1;37mM\033[0m");
-						break;
-					case BD_AMOEBA:
-						printf("\033[0;32mA\033[0m");
-						break;
-					default:
-						printf("(%i)",field[x][y]);
-						break;
-				}
-			}     
-			printf("\n");
-		}  
-		printf("\n\n");
-
-	}
-	
-*/
 
 	int running = 1;
 
-
-	int direction=0;
-
+	const int fps = 60;
+	const int fpsMill = 1000/fps;
+	
 	while(running) 
 	{
+		int current_time=SDL_GetTicks();
+
 		SDL_Event ev;
 		while(SDL_PollEvent(&ev)) 
 		{
@@ -182,9 +111,8 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 		for(int i = 0; i < 4; i++)
 			if(keypressmap[i]>0)keypressmap[i]++;
 
-		bd_game_process(bd_game,direction);
+		bd_game_process(&bd_game);
 	
-		char display[CAVE_WIDTH][CAVE_HEIGHT];
 
 		bd_game_render(bd_game,display);
 	
@@ -194,25 +122,33 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 			{
 				int colors[3];	
 				get_colors(display[x][y],bd_game->Tick,colors);
-				
-				
-				
-				SDL_Rect rect = { SDL_ZOOM*x, SDL_ZOOM*y, SDL_ZOOM,SDL_ZOOM};
-				SDL_FillRect(
-					screen, 
-					&rect, 
-					SDL_MapRGB(screen->format, colors[0],colors[1],colors[2])
-				);
+		
+				uint32_t col = (colors[0]<<16)+(colors[1]<<8)+colors[2];
+
+				if(pixels[y*SDL_ZOOM][x*SDL_ZOOM] != col)
+					for(int a = 0; a < SDL_ZOOM;a++)
+					{
+						for(int b = 0;b < SDL_ZOOM;b++)
+						{
+							pixels[y*SDL_ZOOM+a][x*SDL_ZOOM+b] = col;
+						}
+					}
 			}
 		}
 		
-		SDL_Flip(screen);
-		SDL_Delay(16);
-
-
+		SDL_UpdateTexture(texture, NULL, pixels, CAVE_WIDTH*SDL_ZOOM * sizeof(Uint32));//update only the updated rects
+		SDL_RenderClear(renderer);
+		SDL_RenderCopy(renderer, texture, NULL, NULL);
+		SDL_RenderPresent(renderer);
+		int currentSpeed = SDL_GetTicks() - current_time;
+		if(fpsMill > currentSpeed) {
+			SDL_Delay(fpsMill - currentSpeed);
+		}
 	}
 
-
+	SDL_DestroyTexture(texture);
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
 	SDL_Quit();
 	return 0;
 

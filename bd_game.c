@@ -27,8 +27,6 @@ struct bd_game_struct_t* bd_game_initialize(int level,int difficulty)
 		}
 	}
 
-
-
 	bd_game->Won=0;
 	bd_game->Lost=0;
 	bd_game->Tick=0;
@@ -125,8 +123,9 @@ static void explode(int map[CAVE_WIDTH][CAVE_HEIGHT],int x,int y)
 
 }
 
-void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
+void bd_game_process(struct bd_game_struct_t** bd_game_ptr)
 {
+	struct bd_game_struct_t* bd_game = *bd_game_ptr;
 	int tick = bd_game->Tick++;
 
 
@@ -161,6 +160,8 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 
 			free(bd_game);
 			bd_game = bd_game_initialize(old_cave,old_difficulty); 
+			*bd_game_ptr = bd_game;
+			return;
 		}
 	}
 
@@ -174,8 +175,9 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 			int old_difficulty = bd_game->Difficulty;
 
 			free(bd_game);
-
 			bd_game = bd_game_initialize(old_cave,old_difficulty); 
+			*bd_game_ptr = bd_game;
+			return;
 		}
 	}
 	//int uncovered = 1;
@@ -264,7 +266,7 @@ void bd_game_process(struct bd_game_struct_t* bd_game, int direction)
 					if(move_tick ==0)
 					{
 
-						direction=0;
+						int direction=0;
 
 						if(getkey(1))
 						{
