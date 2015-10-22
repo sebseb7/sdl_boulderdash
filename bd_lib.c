@@ -1,4 +1,5 @@
 #include "bd_lib.h"
+#include <stdlib.h>
 
 extern int bd_cave_data[];
 extern int bd_cave_start_idx[];
@@ -186,7 +187,8 @@ int move_y(int direction)
 	return 0;
 }
 
-static int sinlut[] = {5,8,10,10,8,5,2,0,0,2,5};
+static const int sinlut64[] = { 16,18,19,21,22,24,25,26,27,28,29,30,31,31,32,32,32,32,32,31,31,30,29,28,27,26,25,24,22,21,19,18,16,14,13,11,10,8,7,6,5,4,3,2,1,1,0,0,0,0,0,1,1,2,3,4,5,6,7,8,10,11,13,14,16};
+static const int sinlut32[] = { 5,6,7,8,9,9,10,10,10,10,10,9,9,8,7,6,5,4,3,2,1,1,0,0,0,0,0,1,1,2,3,4,5};
 
 void get_colors(int type,int tick,int* colors)
 {
@@ -198,8 +200,9 @@ void get_colors(int type,int tick,int* colors)
 	switch(type)
 	{
 		case BD_AMOEBA:
+			tick = (rand()&7);
 			colors[0]=6;
-			colors[1]=150+(6*sinlut[(tick>>2)%10]);
+			colors[1]=150+(5*sinlut32[tick&63]);
 			colors[2]=6;
 			break;
 		case BD_DIRT:
@@ -214,9 +217,9 @@ void get_colors(int type,int tick,int* colors)
 			colors[2]=90;
 			break;
 		case BD_OUTBOXactive:
-			colors[0]=93+(4*sinlut[(tick>>2)%10]);
-			colors[1]=93+(4*sinlut[(tick>>2)%10]);
-			colors[2]=93+(4*sinlut[(tick>>2)%10]);
+			colors[0]=93+(2*sinlut64[tick&63]);
+			colors[1]=93+(2*sinlut64[tick&63]);
+			colors[2]=93+(2*sinlut64[tick&63]);
 			break;
 		case BD_OUTBOX:
 		case BD_STEELWALL:
@@ -235,29 +238,29 @@ void get_colors(int type,int tick,int* colors)
 			colors[2]=146;
 			break;
 		case BD_MAGICWALLactive:
-			colors[0]=100+(13*sinlut[(tick>>2)%10]);
-			colors[1]=100+(13*sinlut[(tick>>2)%10]);
-			colors[2]=100+(13*sinlut[(tick>>2)%10]);
+			colors[0]=100+(4*sinlut64[tick&63]);
+			colors[1]=100+(4*sinlut64[tick&63]);
+			colors[2]=100+(4*sinlut64[tick&63]);
 			break;
 		case BD_DIAMOND:
 		case BD_DIAMONDfall:
-			colors[0]=86+(4*sinlut[(tick>>2)%10]);
+			colors[0]=86+(2*sinlut64[tick&63]);
 			colors[1]=6;
-			colors[2]=86+(4*sinlut[((tick+5)>>2)%10]);
+			colors[2]=86+(2*sinlut64[(tick+5)&63]);
 			break;
 		case BD_ROCKFORD:
 		case BD_ROCKFORDgrab:
 			colors[0]=158;
-			colors[1]=90+(15*sinlut[(tick>>2)%10]);
+			colors[1]=90+(5*sinlut64[tick&63]);
 			colors[2]=53;
 			break;
 		case BD_FIREFLYr:
 		case BD_FIREFLYl:
 		case BD_FIREFLYt:
 		case BD_FIREFLYd:
-			colors[0]=32+(20*sinlut[(tick>>1)%10]);
-			colors[1]=32+(20*sinlut[(tick>>1)%10]);
-			colors[2]=32+(20*sinlut[(tick>>1)%10]);
+			colors[0]=32+(20*sinlut32[tick&31]);
+			colors[1]=32+(20*sinlut32[tick&31]);
+			colors[2]=32+(20*sinlut32[tick&31]);
 			break;
 		case BD_EXPLOSION1:
 		case BD_EXPLOSION2:
