@@ -131,7 +131,7 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr)
 
 	int move_tick = (tick-1)%8;
 	int fall_tick = tick%8;
-	int expl_tick = tick%3;
+	int expl_tick = tick%4;
 
 	if(bd_game->Won > 0)
 	{
