@@ -7,7 +7,7 @@
 #include "bd_lib.h"
 #include "bd_game.h"
 
-#include <SDL.h>
+#include "SDL.h"
 
 #define SDL_ZOOM 25
 
@@ -39,7 +39,15 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	SDL_Texture* texture = SDL_CreateTexture(renderer,SDL_PIXELFORMAT_ARGB8888,SDL_TEXTUREACCESS_STATIC,CAVE_WIDTH*SDL_ZOOM, CAVE_HEIGHT*SDL_ZOOM);
 
-	uint32_t pixels[CAVE_HEIGHT*SDL_ZOOM][CAVE_WIDTH*SDL_ZOOM];
+	uint32_t **pixelarray = malloc (CAVE_HEIGHT *SDL_ZOOM* sizeof(int *) + (CAVE_HEIGHT * SDL_ZOOM* (SDL_ZOOM * CAVE_WIDTH * sizeof(uint32_t))));
+	uint32_t *offs = (uint32_t*)&pixelarray[CAVE_HEIGHT * SDL_ZOOM]; 
+	uint32_t *pixeldata = (uint32_t*)&pixelarray[CAVE_HEIGHT * SDL_ZOOM]; 
+
+	for (int i = 0; i < CAVE_HEIGHT*SDL_ZOOM; i++, offs += CAVE_WIDTH*SDL_ZOOM) 
+	{
+		pixelarray[i] = offs;
+	}
+
 	char display[CAVE_WIDTH][CAVE_HEIGHT];
 
 	int curr_level = 0;
@@ -50,7 +58,7 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 
 	const int fps = 60;
 	const int fpsMill = 1000/fps;
-	
+
 	while(running) 
 	{
 		int current_time=SDL_GetTicks();
@@ -107,36 +115,36 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 				default: break;
 			}
 		}
-						
+
 		for(int i = 0; i < 4; i++)
 			if(keypressmap[i]>0)keypressmap[i]++;
 
 		bd_game_process(&bd_game);
-	
+
 
 		bd_game_render(bd_game,display);
-	
+
 		for(int y = 0; y < CAVE_HEIGHT; y++) 
 		{
 			for(int x = 0; x < CAVE_WIDTH; x++) 
 			{
 				int colors[3];	
 				get_colors(display[x][y],bd_game->Tick,colors);
-		
+
 				uint32_t col = (colors[0]<<16)+(colors[1]<<8)+colors[2];
 
-				if(pixels[y*SDL_ZOOM][x*SDL_ZOOM] != col)
+				if(pixelarray[y*SDL_ZOOM][x*SDL_ZOOM] != col)
 					for(int a = 0; a < SDL_ZOOM;a++)
 					{
 						for(int b = 0;b < SDL_ZOOM;b++)
 						{
-							pixels[y*SDL_ZOOM+a][x*SDL_ZOOM+b] = col;
+							pixelarray[y*SDL_ZOOM+a][x*SDL_ZOOM+b] = col;
 						}
 					}
 			}
 		}
-		
-		SDL_UpdateTexture(texture, NULL, pixels, CAVE_WIDTH*SDL_ZOOM * sizeof(Uint32));//update only the updated rects
+
+		SDL_UpdateTexture(texture, NULL, pixeldata, CAVE_WIDTH*SDL_ZOOM * sizeof(Uint32));//update only the updated rects
 		SDL_RenderClear(renderer);
 		SDL_RenderCopy(renderer, texture, NULL, NULL);
 		SDL_RenderPresent(renderer);
@@ -149,9 +157,9 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 	SDL_DestroyTexture(texture);
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
+	free(pixelarray);
 	SDL_Quit();
 	return 0;
-
 }
 
 
