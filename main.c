@@ -29,7 +29,34 @@ int getkey(int key)
 	return 0;
 }
 
+static void SetSDLIcon(SDL_Window* window)
+{
+	// this will "paste" the struct my_icon into this function
+#include "bd_icon.c"
 
+	// these masks are needed to tell SDL_CreateRGBSurface(From)
+	// to assume the data it gets is byte-wise RGB(A) data
+	Uint32 rmask, gmask, bmask, amask;
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+	int shift = (bd_icon.bytes_per_pixel == 3) ? 8 : 0;
+	rmask = 0xff000000 >> shift;
+	gmask = 0x00ff0000 >> shift;
+	bmask = 0x0000ff00 >> shift;
+	amask = 0x000000ff >> shift;
+#else // little endian, like x86
+	rmask = 0x000000ff;
+	gmask = 0x0000ff00;
+	bmask = 0x00ff0000;
+	amask = (bd_icon.bytes_per_pixel == 3) ? 0 : 0xff000000;
+#endif
+
+	SDL_Surface* icon = SDL_CreateRGBSurfaceFrom((void*)bd_icon.pixel_data, bd_icon.width,
+			bd_icon.height, bd_icon.bytes_per_pixel*8, bd_icon.bytes_per_pixel*bd_icon.width,
+			rmask, gmask, bmask, amask);
+	SDL_SetWindowIcon(window, icon);
+
+	SDL_FreeSurface(icon);
+}
 
 int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unused__))) 
 {
@@ -38,6 +65,8 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 	SDL_Window* window = SDL_CreateWindow( "Boudlerdash", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, CAVE_WIDTH*SDL_ZOOM, CAVE_HEIGHT*SDL_ZOOM, SDL_WINDOW_SHOWN );
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	SDL_Texture* texture = SDL_CreateTexture(renderer,SDL_PIXELFORMAT_ARGB8888,SDL_TEXTUREACCESS_STATIC,CAVE_WIDTH*SDL_ZOOM, CAVE_HEIGHT*SDL_ZOOM);
+
+	SetSDLIcon(window);
 
 	uint32_t **pixelarray = malloc (CAVE_HEIGHT *SDL_ZOOM* sizeof(int *) + (CAVE_HEIGHT * SDL_ZOOM* (SDL_ZOOM * CAVE_WIDTH * sizeof(uint32_t))));
 	uint32_t *offs = (uint32_t*)&pixelarray[CAVE_HEIGHT * SDL_ZOOM]; 
