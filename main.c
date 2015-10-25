@@ -11,7 +11,7 @@
 
 #define SDL_ZOOM 25
 
-int keypressmap[4];
+int keypressmap[8];
 int keymap;
 
 
@@ -114,6 +114,18 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 						case SDLK_LEFT:
 							keypressmap[3]=0;
 							break;
+						case SDLK_F1:
+							keypressmap[4]=0;
+							break;
+						case SDLK_F2:
+							keypressmap[5]=0;
+							break;
+						case SDLK_F3:
+							keypressmap[6]=0;
+							break;
+						case SDLK_F4:
+							keypressmap[7]=0;
+							break;
 						default: break;
 					}
 					break;
@@ -138,6 +150,22 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 						case SDLK_LEFT:
 							keymap |= 1 << 3;
 							keypressmap[3]=1;
+							break;
+						case SDLK_F1:
+							keymap |= 1 << 4;
+							keypressmap[4]=1;
+							break;
+						case SDLK_F2:
+							keymap |= 1 << 5;
+							keypressmap[5]=1;
+							break;
+						case SDLK_F3:
+							keymap |= 1 << 6;
+							keypressmap[6]=1;
+							break;
+						case SDLK_F4:
+							keymap |= 1 << 7;
+							keypressmap[7]=1;
 							break;
 						default: break;
 					}
