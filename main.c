@@ -39,12 +39,10 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 
 
 	uint32_t **pixelarray = malloc (CAVE_HEIGHT *SDL_ZOOM* sizeof(int *) + (CAVE_HEIGHT * SDL_ZOOM* (SDL_ZOOM * CAVE_WIDTH * sizeof(uint32_t))));
-	uint32_t *offs = (uint32_t*)&pixelarray[CAVE_HEIGHT * SDL_ZOOM]; 
-	uint32_t *pixeldata = (uint32_t*)&pixelarray[CAVE_HEIGHT * SDL_ZOOM]; 
 
-	for (int i = 0; i < CAVE_HEIGHT*SDL_ZOOM; i++, offs += CAVE_WIDTH*SDL_ZOOM) 
+	for (int i = 0; i < CAVE_HEIGHT*SDL_ZOOM; i++) 
 	{
-		pixelarray[i] = offs;
+		pixelarray[i] = (uint32_t*)(&pixelarray[CAVE_HEIGHT * SDL_ZOOM])+(CAVE_WIDTH*SDL_ZOOM*i);
 	}
 
 	char display[CAVE_WIDTH][CAVE_HEIGHT];
@@ -174,7 +172,7 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 			}
 		}
 		
-		sdl_loop(pixeldata);
+		sdl_loop((uint32_t*)&pixelarray[CAVE_HEIGHT * SDL_ZOOM]);
 		/*
 		 *try: SDL_RenderFillRects(SDL_Renderer*   renderer,const SDL_Rect* rects,int             count)
 		 *
