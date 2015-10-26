@@ -131,7 +131,12 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr)
 
 	int move_tick = (tick-1)%8;
 	int fall_tick = tick%8;
-	int expl_tick = tick%4;
+	int expl_tick = tick%3;
+						
+	if(getkey(6))
+	{
+		bd_game->Won=1;
+	}
 
 	if(bd_game->Won > 0)
 	{
@@ -267,6 +272,13 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr)
 					{
 
 						int direction=0;
+						
+						if(getkey(5))
+						{
+							bd_game->Lost=1;
+							explode(new_cavemap,x,y);
+							break;
+						}
 
 						if(getkey(1))
 						{
