@@ -3,8 +3,8 @@
 #include "bd_game.h"
 #include "main.h"
 
-#define BD_UNCOVER_LOOP 69
-#define BD_START_DELAY 120
+#define BD_UNCOVER_LOOP 18
+#define BD_START_DELAY 30
 
 extern int bd_cave_data[];
 extern int bd_cave_start_idx[];
@@ -126,13 +126,14 @@ static void explode(int map[CAVE_WIDTH][CAVE_HEIGHT],int x,int y)
 void bd_game_process(struct bd_game_struct_t** bd_game_ptr)
 {
 	struct bd_game_struct_t* bd_game = *bd_game_ptr;
-	int tick = bd_game->Tick++;
+	bd_game->Tick++;
+	int tick = bd_game->Tick;
 
 
-	int move_tick = (tick-1)%8;
-	int fall_tick = tick%8;
-	int expl_tick = tick%3;
-						
+	int move_tick = (tick-1)%2;
+	int fall_tick = tick%2;
+	int expl_tick = 0;
+
 	if(getkey(6))
 	{
 		bd_game->Won=1;
@@ -146,7 +147,7 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr)
 		bd_game->Won++;
 
 
-		if(bd_game->Won == 100)
+		if(bd_game->Won == 25)
 		{
 			int old_cave = bd_game->Cave;
 			int old_difficulty = bd_game->Difficulty;
@@ -174,7 +175,7 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr)
 	{
 		bd_game->Lost++;
 
-		if(bd_game->Lost == 100)
+		if(bd_game->Lost == 25)
 		{
 			int old_cave = bd_game->Cave;
 			int old_difficulty = bd_game->Difficulty;
@@ -195,6 +196,20 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr)
 		for(int line=0;line < CAVE_HEIGHT;line++)
 		{
 			int pos = rand()%CAVE_WIDTH;
+			bd_game->covered[pos][line] = 0;
+			pos = rand()%CAVE_WIDTH;
+			bd_game->covered[pos][line] = 0;
+			pos = rand()%CAVE_WIDTH;
+			bd_game->covered[pos][line] = 0;
+			pos = rand()%CAVE_WIDTH;
+			bd_game->covered[pos][line] = 0;
+			pos = rand()%CAVE_WIDTH;
+			bd_game->covered[pos][line] = 0;
+			pos = rand()%CAVE_WIDTH;
+			bd_game->covered[pos][line] = 0;
+			pos = rand()%CAVE_WIDTH;
+			bd_game->covered[pos][line] = 0;
+			pos = rand()%CAVE_WIDTH;
 			bd_game->covered[pos][line] = 0;
 		}
 		//uncovered=0;
@@ -272,7 +287,7 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr)
 					{
 
 						int direction=0;
-						
+
 						if(getkey(5))
 						{
 							bd_game->Lost=1;

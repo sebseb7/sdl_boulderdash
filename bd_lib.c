@@ -196,6 +196,7 @@ void get_colors(int type,int tick,int* colors)
 	colors[1]=0;
 	colors[2]=0;
 
+	tick*=4;
 
 	switch(type)
 	{
