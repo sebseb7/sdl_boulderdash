@@ -23,7 +23,8 @@ bd_osx: bd_icon.c main.c sdl_util.c sdl_util.h bd_lib.c bd_game.c bd_caves.h bd_
 	@tar -C /Library/Frameworks -c SDL2.framework | tar -C Boulderdash.app/Contents/Frameworks -x
 	@touch Boulderdash.app
 
-bd.exe: bd_icon.c bd.ico bd.rc main.c sdl_util.c sdl_util.h bd_lib.c bd_game.c bd_caves.h bd_game.h Makefile SDL2-2.0.4
+bd.exe: bd_icon.c bd_36x36x4.png bd.ico bd.rc main.c sdl_util.c sdl_util.h bd_lib.c bd_game.c bd_caves.h bd_game.h Makefile SDL2-2.0.4
+	icotool -c -o bd.ico bd_36x36x4.png
 	i686-w64-mingw32-windres bd.rc bdrc.o
 	i686-w64-mingw32-gcc -static -std=gnu99 -ISDL2-2.0.4/i686-w64-mingw32/include/SDL2 -D_GNU_SOURCE=1 -Dmain=SDL_main -LSDL2-2.0.4/i686-w64-mingw32/lib  main.c bd_lib.c bd_game.c sdl_util.c -lmingw32 -lSDL2main -lSDL2 -mwindows -Wl,--no-undefined -lm -ldinput8 -ldxguid -ldxerr8 -luser32 -lgdi32 -lwinmm -limm32 -lole32 -loleaut32 -lshell32 -lversion -luuid -static-libgcc  bdrc.o -o bd.exe
 
