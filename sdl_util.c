@@ -116,13 +116,24 @@ static void keydown(int key)
 	ackmap &= ~(1 << key);
 }
 
+int init_tick;
+
 int sdl_handle_events(const void* pixels)
 {
+
 	SDL_UpdateTexture(texture, NULL, pixels, row * sizeof(Uint32));//update only the updated rects
 	//	SDL_RenderClear(renderer);//neccessary?
 	SDL_RenderCopy(renderer, texture, NULL, NULL);
 	SDL_RenderPresent(renderer);
-	
+
+	// limit to 60fps
+	int current_tick = SDL_GetTicks();
+	if( (current_tick - init_tick) < 16)
+	{
+		SDL_Delay(16 - (current_tick - init_tick));
+	}
+	init_tick = SDL_GetTicks();
+
 	SDL_Event ev;
 	while(SDL_PollEvent(&ev)) 
 	{
@@ -204,5 +215,5 @@ int sdl_handle_events(const void* pixels)
 		}
 	}
 	return 1;
-	
+
 }
