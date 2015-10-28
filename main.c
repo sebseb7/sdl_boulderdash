@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "bd_caves.h"
 #include "bd_lib.h"
@@ -12,38 +13,62 @@
 
 #define SDL_ZOOM 25
 
-int keypressmap[8];
-int keymap;
-
+static int keymap;
+static int releasemap;
+static int ackmap;
 
 int getkey(int key)
 {
-	if(keypressmap[key] > 15)
+	if((keymap >> key) & 1)
 	{
-		return 1;
-	}
-	else if((keymap >> key) & 1)
-	{
-		keymap &= ~(1 << key);
+		ackmap |= (1 << key);
 		return 1;
 	}
 	return 0;
 }
 
+static void release_upped_keys(void)
+{
+	for(int i = 0; i < 8;i++)
+	{
+		if(releasemap & (1<<i))
+		{
+			keymap &= ~(1 << i);
+		}
+	}
+	releasemap = 0;
+}
+
+
+static void keyup(int key)
+{
+	if(ackmap & (1<<key))
+	{
+		keymap &= ~(1 << key);
+	}
+	else
+	{
+		releasemap |= (1 << key);
+	}
+}
+
+static void keydown(int key)
+{
+	keymap = 1 << key;
+	ackmap &= ~(1 << key);
+}
 
 int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unused__))) 
 {
 	srand(time(NULL));
 
-	sdl_init(CAVE_WIDTH*SDL_ZOOM, CAVE_HEIGHT*SDL_ZOOM,"Boudlerdash",60);
+	int zoom = SDL_ZOOM;
+
+	sdl_init(CAVE_WIDTH*zoom, CAVE_HEIGHT*zoom,"Boudlerdash",60);
 
 
-	uint32_t **pixelarray = malloc (CAVE_HEIGHT *SDL_ZOOM* sizeof(int *) + (CAVE_HEIGHT * SDL_ZOOM* (SDL_ZOOM * CAVE_WIDTH * sizeof(uint32_t))));
-
-	for (int i = 0; i < CAVE_HEIGHT*SDL_ZOOM; i++) 
-	{
-		pixelarray[i] = (uint32_t*)(&pixelarray[CAVE_HEIGHT * SDL_ZOOM])+(CAVE_WIDTH*SDL_ZOOM*i);
-	}
+	uint32_t* pixelarray = malloc (CAVE_HEIGHT *zoom * CAVE_WIDTH * zoom * sizeof(uint32_t));
+	memset(pixelarray,0,CAVE_HEIGHT * zoom * CAVE_WIDTH * zoom);
 
 	char display[CAVE_WIDTH][CAVE_HEIGHT];
 
@@ -54,7 +79,10 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 	int running = 1;
 
 	int start_tick = SDL_GetTicks();
-	
+
+	releasemap=0;
+
+
 	while(running) 
 	{
 		SDL_Event ev;
@@ -68,28 +96,28 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 					switch(ev.key.keysym.sym) 
 					{
 						case SDLK_UP:
-							keypressmap[0]=0;
+							keyup(0);
 							break;
 						case SDLK_RIGHT:
-							keypressmap[1]=0;
+							keyup(1);
 							break;
 						case SDLK_DOWN:
-							keypressmap[2]=0;
+							keyup(2);
 							break;
 						case SDLK_LEFT:
-							keypressmap[3]=0;
+							keyup(3);
 							break;
 						case SDLK_F1:
-							keypressmap[4]=0;
+							keyup(4);
 							break;
 						case SDLK_F2:
-							keypressmap[5]=0;
+							keyup(5);
 							break;
 						case SDLK_F3:
-							keypressmap[6]=0;
+							keyup(6);
 							break;
 						case SDLK_F4:
-							keypressmap[7]=0;
+							keyup(7);
 							break;
 						default: break;
 					}
@@ -101,36 +129,36 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 							running = 0;
 							break;
 						case SDLK_UP:
-							keymap |= 1 << 0;
-							keypressmap[0]=1;
+							keydown(0);
 							break;
 						case SDLK_RIGHT:
-							keymap |= 1 << 1;
-							keypressmap[1]=1;
+							keydown(1);
 							break;
 						case SDLK_DOWN:
-							keymap |= 1 << 2;
-							keypressmap[2]=1;
+							keydown(2);
 							break;
 						case SDLK_LEFT:
-							keymap |= 1 << 3;
-							keypressmap[3]=1;
+							keydown(3);
 							break;
 						case SDLK_F1:
-							keymap |= 1 << 4;
-							keypressmap[4]=1;
+							keydown(4);
 							break;
 						case SDLK_F2:
-							keymap |= 1 << 5;
-							keypressmap[5]=1;
+							keydown(5);
 							break;
 						case SDLK_F3:
-							keymap |= 1 << 6;
-							keypressmap[6]=1;
+							keydown(6);
 							break;
 						case SDLK_F4:
-							keymap |= 1 << 7;
-							keypressmap[7]=1;
+							keydown(7);
+							/*
+							   zoom=20;
+							   sdl_windowsize(CAVE_WIDTH*zoom, CAVE_HEIGHT*zoom);
+
+
+							   free(pixelarray);
+							   pixelarray = malloc (CAVE_HEIGHT *zoom * CAVE_WIDTH * zoom * sizeof(uint32_t));
+							   memset(pixelarray,0,CAVE_HEIGHT *zoom * CAVE_WIDTH * zoom * sizeof(uint32_t));*/
 							break;
 						default: break;
 					}
@@ -138,18 +166,16 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 			}
 		}
 
-		for(int i = 0; i < 4; i++)
-			if(keypressmap[i]>0)keypressmap[i]++;
-
 		int current_tick = SDL_GetTicks();
 
 		while( (current_tick - start_tick) > 64)
 		{
 			bd_game_process(&bd_game);
+			release_upped_keys();
 			current_tick = SDL_GetTicks();
 			start_tick+=64;
 		}
-		
+
 		bd_game_render(bd_game,display);
 
 		for(int y = 0; y < CAVE_HEIGHT; y++) 
@@ -161,24 +187,24 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 
 				uint32_t col = (colors[0]<<16)+(colors[1]<<8)+colors[2];
 
-				if(pixelarray[y*SDL_ZOOM][x*SDL_ZOOM] != col)
-					for(int a = 0; a < SDL_ZOOM;a++)
+				if(pixelarray[((y*zoom)*CAVE_WIDTH*zoom)+x*zoom] != col)
+					for(int a = 0; a < zoom;a++)
 					{
-						for(int b = 0;b < SDL_ZOOM;b++)
+						for(int b = 0;b < zoom;b++)
 						{
-							pixelarray[y*SDL_ZOOM+a][x*SDL_ZOOM+b] = col;
+							pixelarray[((y*zoom+a)*CAVE_WIDTH*zoom)+x*zoom+b] = col;
 						}
 					}
 			}
 		}
-		
-		sdl_loop((uint32_t*)&pixelarray[CAVE_HEIGHT * SDL_ZOOM]);
+
+		sdl_loop(pixelarray);
 		/*
 		 *try: SDL_RenderFillRects(SDL_Renderer*   renderer,const SDL_Rect* rects,int             count)
 		 *
 		 */
 	}
-
+	free(pixelarray);
 	sdl_deinit();
 	return 0;
 }

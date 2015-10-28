@@ -200,6 +200,12 @@ void get_colors(int type,int tick,int* colors)
 
 	switch(type)
 	{
+		case BD_SLIME:
+			tick = (rand()&7);
+			colors[0]=6;
+			colors[1]=6;
+			colors[2]=150+(5*sinlut32[tick&63]);
+			break;
 		case BD_AMOEBA:
 			tick = (rand()&7);
 			colors[0]=6;

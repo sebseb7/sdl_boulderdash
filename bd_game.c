@@ -3,6 +3,7 @@
 #include "bd_game.h"
 #include "main.h"
 
+
 #define BD_UNCOVER_LOOP 18
 #define BD_START_DELAY 30
 
@@ -30,6 +31,8 @@ struct bd_game_struct_t* bd_game_initialize(int level,int difficulty)
 	bd_game->Won=0;
 	bd_game->Lost=0;
 	bd_game->Tick=0;
+	bd_game->SlimeSeed1=0;
+	bd_game->SlimeSeed2=0;
 	bd_game->DiamondsCollected=0;
 	bd_game->Cave=level;
 	bd_game->Difficulty=difficulty;
@@ -130,8 +133,9 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr)
 	int tick = bd_game->Tick;
 
 
-	int move_tick = (tick-1)%2;
-	int fall_tick = tick%2;
+
+	int move_tick = tick%2;
+	int fall_tick = move_tick;
 	int expl_tick = 0;
 
 	if(getkey(6))
@@ -153,7 +157,7 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr)
 			int old_difficulty = bd_game->Difficulty;
 
 			old_cave++;
-			if(old_cave==5)
+			if(old_cave==6)
 			{
 				old_cave=0;
 				old_difficulty++;
@@ -226,11 +230,17 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr)
 
 	int amoeba_possible=0;
 
-	for(int y =CAVE_HEIGHT-1; y>=0; y--) 
+	//for(int y =CAVE_HEIGHT-1; y>=0; y--) 
+	for(int y =0; y < CAVE_HEIGHT ; y++) 
 	{
 		for(int x = 0; x < CAVE_WIDTH; x++) 
 		{
 			int curr_type = bd_game->cavemap[x][y];
+			if(bd_game->cavemap[x][y] != new_cavemap[x][y])
+			{
+				//printf("confl\n");
+				continue;
+			};
 			int fall=1;
 			switch(curr_type)
 			{
@@ -248,7 +258,11 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr)
 							  )
 							{
 								amoeba_possible++;
-								if((bd_game->Tick>BD_START_DELAY)&&(rand()%450==0))
+								if(((bd_game->AmoebaTime*15) < tick)&&(rand()%25==0))
+								{
+									new_cavemap[x+move_x(dir)][y+move_y(dir)]=BD_AMOEBA;
+								}
+								else if((bd_game->Tick>BD_START_DELAY)&&(rand()%250==0))
 								{
 									new_cavemap[x+move_x(dir)][y+move_y(dir)]=BD_AMOEBA;
 								}
@@ -362,50 +376,6 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr)
 						}
 					}
 					break;
-				case BD_FIREFLYr:
-				case BD_FIREFLYl:
-				case BD_FIREFLYt:
-				case BD_FIREFLYd:
-					if(move_tick ==0)
-					{
-						int dir = firefly_left(curr_type);
-
-						for(int di = 0; di<4; di++)
-						{
-							if(
-									(new_cavemap[x+move_x(di)][y+move_y(di)] == BD_ROCKFORD)||
-									(new_cavemap[x+move_x(di)][y+move_y(di)] == BD_ROCKFORDgrab)
-							  )
-							{
-								explode(new_cavemap,x,y);
-								bd_game->Lost=1;
-							}
-							if(new_cavemap[x+move_x(di)][y+move_y(di)] == BD_AMOEBA)
-							{
-								explode(new_cavemap,x,y);
-							}
-						}
-
-						if(new_cavemap[x][y] != BD_EXPLOSION1)
-						{
-							if(new_cavemap[x+firefly_x(dir)][y+firefly_y(dir)] == BD_SPACE)
-							{
-								new_cavemap[x+firefly_x(dir)][y+firefly_y(dir)]=dir;
-								new_cavemap[x][y]=BD_SPACE;
-							}
-							else if( new_cavemap[x+firefly_x(curr_type)][y+firefly_y(curr_type)] == BD_SPACE)
-							{
-								new_cavemap[x+firefly_x(curr_type)][y+firefly_y(curr_type)]=curr_type;
-								new_cavemap[x][y]=BD_SPACE;
-							}
-							else
-							{
-								new_cavemap[x][y]=firefly_right(curr_type);
-							}
-						}
-					}
-					break;
-					//there must still be a bug, oberserved a resting diamond on top a freestanding boulder
 				case BD_BOULDERfall:
 				case BD_DIAMONDfall:
 					if(fall_tick == 0)
@@ -447,7 +417,8 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr)
 								(new_cavemap[x][y+1] == BD_SPACE)
 						  )
 						{
-							new_cavemap[x][y]=curr_type+fall;
+							new_cavemap[x][y+1]=curr_type+fall;
+							new_cavemap[x][y]=BD_SPACE;
 						}
 						else if(
 								new_cavemap[x][y+1] == BD_SPACE
@@ -493,6 +464,41 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr)
 							new_cavemap[x][y+2]=BD_DIAMONDfall;
 							new_cavemap[x][y]=BD_SPACE;
 						}
+						else if(
+								(new_cavemap[x][y+1] == BD_MAGICWALLactive)&&
+								((new_cavemap[x][y] == BD_DIAMONDfall)||
+								 (new_cavemap[x][y] == BD_BOULDERfall))&&
+								(new_cavemap[x][y+2] != BD_SPACE)
+							   )
+						{
+							new_cavemap[x][y]=BD_SPACE;
+						}
+						else if(
+								(new_cavemap[x][y+1] == BD_SLIME)&&
+								(new_cavemap[x][y] == BD_DIAMOND)&&
+								(new_cavemap[x][y+2] == BD_SPACE)
+							   )
+						{
+							NextRandom(&bd_game->SlimeSeed1,&bd_game->SlimeSeed2);
+							if(bd_game->SlimeSeed1 < 10)
+							{
+								new_cavemap[x][y+2]=BD_DIAMONDfall;
+								new_cavemap[x][y]=BD_SPACE;
+							}
+						}
+						else if(
+								(new_cavemap[x][y+1] == BD_SLIME)&&
+								(new_cavemap[x][y] == BD_BOULDER)&&
+								(new_cavemap[x][y+2] == BD_SPACE)
+							   )
+						{
+							NextRandom(&bd_game->SlimeSeed1,&bd_game->SlimeSeed2);
+							if(bd_game->SlimeSeed1 < 10)
+							{
+								new_cavemap[x][y+2]=BD_BOULDERfall;
+								new_cavemap[x][y]=BD_SPACE;
+							}
+						}
 					}
 					break;
 				case BD_MAGICWALL:
@@ -500,6 +506,51 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr)
 					{
 						new_cavemap[x][y]=BD_MAGICWALLactive;
 					}
+					break;
+				case BD_FIREFLYr:
+				case BD_FIREFLYl:
+				case BD_FIREFLYt:
+				case BD_FIREFLYd:
+					if(move_tick ==0)
+					{
+						int dir = firefly_left(curr_type);
+
+						for(int di = 0; di<4; di++)
+						{
+							if(
+									(new_cavemap[x+move_x(di)][y+move_y(di)] == BD_ROCKFORD)||
+									(new_cavemap[x+move_x(di)][y+move_y(di)] == BD_ROCKFORDgrab)
+							  )
+							{
+								explode(new_cavemap,x,y);
+								bd_game->Lost=1;
+							}
+							if(new_cavemap[x+move_x(di)][y+move_y(di)] == BD_AMOEBA)
+							{
+								explode(new_cavemap,x,y);
+							}
+						}
+
+						if(new_cavemap[x][y] != BD_EXPLOSION1)
+						{
+							if(new_cavemap[x+firefly_x(dir)][y+firefly_y(dir)] == BD_SPACE)
+							{
+								new_cavemap[x+firefly_x(dir)][y+firefly_y(dir)]=dir;
+								new_cavemap[x][y]=BD_SPACE;
+							}
+							else if( new_cavemap[x+firefly_x(curr_type)][y+firefly_y(curr_type)] == BD_SPACE)
+							{
+								new_cavemap[x+firefly_x(curr_type)][y+firefly_y(curr_type)]=curr_type;
+								new_cavemap[x][y]=BD_SPACE;
+							}
+							else
+							{
+								new_cavemap[x][y]=firefly_right(curr_type);
+							}
+						}
+					}
+					break;
+					//there must still be a bug, oberserved a resting diamond on top a freestanding boulder
 			}
 		}
 	}

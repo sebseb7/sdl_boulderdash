@@ -3,9 +3,9 @@
 
 #include "bd_lib.h"
 
-const int bd_caves = 5;
+const int bd_caves = 6;
 
-const int bd_cave_start_idx[] = {0,155,276,357,451};
+const int bd_cave_start_idx[] = {0,155,276,357,451,501};
 
 const int bd_cave_data[] = {
 
@@ -102,7 +102,7 @@ const int bd_cave_data[] = {
 	BD_DRAW_POINT,19,11,BD_INBOX,
 	BD_DRAW_POINT,1,10,BD_OUTBOX,
 
-	// 5
+	// 5 (intermission)
 	30,0,
 	1,1,1,1,1,
 	20,20,20,20,20,
@@ -128,6 +128,20 @@ Point=3 3 INBOX
 Point=2 10 OUTBOX
 */
 
+	20,40,
+	5,8,10,10,10,
+	30,30,30,30,30,
+	BD_COLOR_BLUE,BD_COLOR_GRAY2,BD_COLOR_WHITE,
+	30,31,32,33,34,
+	BD_BOULDER,255,BD_DIAMOND,127,0,0,0,0,
+	2,0,7,
+	BD_DRAW_FILLRECT,1,7,38,20,BD_SPACE,
+	BD_DRAW_FILLRECT,20,1,38,20,BD_DIRT,
+	BD_DRAW_RASTER,1,5,19,3,1,2,BD_SLIME,
+	BD_DRAW_LINE,1,18,19,18,BD_SLIME,
+	BD_DRAW_LINE,1,20,19,20,BD_MAGICWALL,
+	BD_DRAW_POINT,3,17,BD_INBOX,
+	BD_DRAW_POINT,35,18,BD_OUTBOX,
 
 /*
 DiamondValue=20 40

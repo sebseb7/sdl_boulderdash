@@ -24,6 +24,8 @@ struct bd_game_struct_t
 	int MagicWallTime;
 	int AmoebaTime;
 	int AmoebaSpace;
+	int SlimeSeed1;
+	int SlimeSeed2;
 	int Intermission;
 	char covered[CAVE_WIDTH][CAVE_HEIGHT];
 	int cavemap[CAVE_WIDTH][CAVE_HEIGHT];

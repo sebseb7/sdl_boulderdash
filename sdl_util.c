@@ -51,6 +51,16 @@ void sdl_init(int h, int v,const char* title, int fps)
 	row=h;
 };
 
+void sdl_windowsize(int x,int y)
+{
+	SDL_DestroyTexture(texture);
+	SDL_DestroyRenderer(renderer);
+	SDL_SetWindowSize(window,x,y);
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED| SDL_RENDERER_PRESENTVSYNC);
+	texture = SDL_CreateTexture(renderer,SDL_PIXELFORMAT_ARGB8888,SDL_TEXTUREACCESS_STREAMING,x,y);
+	row=x;
+}
+
 void sdl_deinit(void)
 {
 	initialized=0;
