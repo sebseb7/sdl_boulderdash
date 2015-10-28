@@ -9,6 +9,8 @@ todo:
 * lives
 * intermission logic
 * more levels
-
+* SVG icon scaled for all uses
+* iphone project
+* andoid project
 
 should be identical to : http://www.boulder-dash.nl/down/maps/PeterLiepa/BoulderDash02.html
