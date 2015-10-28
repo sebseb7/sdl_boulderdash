@@ -1,5 +1,8 @@
 bd_test
 bd.exe
 bd.zip
-SDL-1.2.15
-
+Boulderdash.app/Contents/Frameworks/SDL2.framework
+Boulderdash.app/Contents/MacOS/bd_osx
+Boulderdash.app/Contents/Resources/iconfile.icns
+SDL2-2.0.4
+bdrc.o

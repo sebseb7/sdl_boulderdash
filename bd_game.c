@@ -192,8 +192,6 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr)
 	}
 	//int uncovered = 1;
 
-	//printf("%i %i %i\n",tick,BD_UNCOVER_LOOP,move_tick);
-
 
 	if(tick < BD_UNCOVER_LOOP)
 	{
@@ -220,7 +218,7 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr)
 	}
 
 	int new_cavemap[CAVE_WIDTH][CAVE_HEIGHT];
-	for(int y = 1; y < CAVE_HEIGHT-1; y++) 
+	for(int y = 0; y < CAVE_HEIGHT; y++) 
 	{
 		for(int x = 0; x < CAVE_WIDTH; x++) 
 		{
@@ -230,7 +228,6 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr)
 
 	int amoeba_possible=0;
 
-	//for(int y =CAVE_HEIGHT-1; y>=0; y--) 
 	for(int y =0; y < CAVE_HEIGHT ; y++) 
 	{
 		for(int x = 0; x < CAVE_WIDTH; x++) 
@@ -238,7 +235,6 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr)
 			int curr_type = bd_game->cavemap[x][y];
 			if(bd_game->cavemap[x][y] != new_cavemap[x][y])
 			{
-				//printf("confl\n");
 				continue;
 			};
 			int fall=1;
