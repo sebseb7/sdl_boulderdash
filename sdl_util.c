@@ -41,6 +41,7 @@ static void SetSDLIcon(SDL_Window* window)
 
 void sdl_init(int h, int v,const char* title, int fps)
 {
+	SDL_EnableScreenSaver();
 	window = SDL_CreateWindow( title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, h,v, SDL_WINDOW_SHOWN );
 	SetSDLIcon(window);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED| SDL_RENDERER_PRESENTVSYNC);
