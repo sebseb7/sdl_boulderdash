@@ -35,6 +35,6 @@ struct bd_game_struct_t
 struct bd_game_struct_t* bd_game_initialize(int level,int difficulty);
 
 void bd_game_process(struct bd_game_struct_t** bd_game);
-void bd_game_render(struct bd_game_struct_t* bd_game,char display[CAVE_WIDTH][CAVE_HEIGHT]);
+void bd_game_render(struct bd_game_struct_t* bd_game,char display[CAVE_WIDTH][(INFO_HEIGHT+CAVE_HEIGHT)]);
 
 #endif

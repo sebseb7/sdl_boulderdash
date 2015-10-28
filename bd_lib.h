@@ -64,6 +64,7 @@ struct cave_struct_t
 
 #define CAVE_WIDTH 40
 #define CAVE_HEIGHT 22
+#define INFO_HEIGHT 6
 
 int render_field(int cave,int level,int field[CAVE_WIDTH][CAVE_HEIGHT]);
 

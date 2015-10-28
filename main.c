@@ -13,26 +13,28 @@
 
 #define SDL_ZOOM 25
 
-
 int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unused__))) 
 {
 	srand(time(NULL));
 
 	int zoom = SDL_ZOOM;
 
-	sdl_init(CAVE_WIDTH*zoom, CAVE_HEIGHT*zoom,"Boudlerdash",60);
+	sdl_init(CAVE_WIDTH*zoom, (INFO_HEIGHT+CAVE_HEIGHT)*zoom,"Boudlerdash",60);
 
 
-	uint32_t* pixelarray = malloc (CAVE_HEIGHT *zoom * CAVE_WIDTH * zoom * sizeof(uint32_t));
-	memset(pixelarray,0,CAVE_HEIGHT * zoom * CAVE_WIDTH * zoom);
+	uint32_t* pixelarray = malloc ((INFO_HEIGHT+CAVE_HEIGHT)*zoom * CAVE_WIDTH * zoom * sizeof(uint32_t));
+	memset(pixelarray,0,(INFO_HEIGHT+CAVE_HEIGHT) * zoom * CAVE_WIDTH * zoom);
 
-	char display[CAVE_WIDTH][CAVE_HEIGHT];
+	char display[CAVE_WIDTH][(INFO_HEIGHT+CAVE_HEIGHT)];
+	memset(display,0,(INFO_HEIGHT+CAVE_HEIGHT) * CAVE_WIDTH);
 
 	int curr_level = 0;
 	int curr_cave = 0;
 	struct bd_game_struct_t* bd_game = bd_game_initialize(curr_cave,curr_level);
 
 	int start_tick = SDL_GetTicks();
+
+	//open_url("http://google.de");
 
 	while(sdl_handle_events(pixelarray)) 
 	{
@@ -48,7 +50,7 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 
 		bd_game_render(bd_game,display);
 
-		for(int y = 0; y < CAVE_HEIGHT; y++) 
+		for(int y = 0; y < (INFO_HEIGHT+CAVE_HEIGHT); y++) 
 		{
 			for(int x = 0; x < CAVE_WIDTH; x++) 
 			{

@@ -1,4 +1,6 @@
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
 #include "bd_game.h"
 #include "main.h"
@@ -568,8 +570,76 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr)
 
 }
 
-void bd_game_render(struct bd_game_struct_t* bd_game,char display[CAVE_WIDTH][CAVE_HEIGHT])
+
+
+static uint16_t font5x3[] = {32319,17393,24253,32437,31879,30391,29343,31905,32447,31911};
+
+void render_digit_5x3(int x,int y, int digit,int typea, int typeb,char display[CAVE_WIDTH][(INFO_HEIGHT+CAVE_HEIGHT)])
 {
+	for(int i=0;i<3;i++)
+	{
+		for(int j=0;j<5;j++)
+		{
+			if(digit == -1)
+				display[x+i][y+j] =typeb;
+			else
+			{
+				if(font5x3[digit] & (1<<(i*5+j)))
+				{
+					display[x+i][y+j] =typea;
+				}
+				else
+				{
+					display[x+i][y+j] =typeb;
+				}
+
+			}
+		}
+	}
+}
+
+void render_digits_5x3(uint16_t x, uint16_t y, const char *text, int typea, int typeb,char display[CAVE_WIDTH][(INFO_HEIGHT+CAVE_HEIGHT)])
+{
+	while (*text)
+	{
+		render_digit_5x3(x,y,(*text)-48,typea,typeb,display);
+		x+=4;
+		text++;
+	}
+
+}
+
+static void render_num(int number,int x,int y,int length,int pad, int typea, int typeb,char display[CAVE_WIDTH][(INFO_HEIGHT+CAVE_HEIGHT)])
+{
+
+	char s[10];
+	snprintf(s,10, "%i", (int)number);
+
+	int len = strlen(s);
+
+	if (length < len) {
+		int i;
+		for (i = 0; i < length; i++) {
+			render_digit_5x3(x, y, -1, typea,typeb,display);
+			x+=4;
+		}
+		return;
+	}
+	int i;
+	for (i = 0; i < length - len; i++) {
+		render_digit_5x3(x, y, pad, typea,typeb,display);
+		x+=4;
+	}
+	
+	render_digits_5x3(x, y, (char*)s, typea,typeb,display);
+
+}
+
+void bd_game_render(struct bd_game_struct_t* bd_game,char display[CAVE_WIDTH][(INFO_HEIGHT+CAVE_HEIGHT)])
+{
+	
+	//cave part:
+
 	for(int y = 0; y < CAVE_HEIGHT; y++) 
 	{
 		for(int x = 0; x < CAVE_WIDTH; x++) 
@@ -593,5 +663,20 @@ void bd_game_render(struct bd_game_struct_t* bd_game,char display[CAVE_WIDTH][CA
 			display[x][y]=field;
 		}
 	}
+
+	//info part:
+
+	for(int y = CAVE_HEIGHT; y < (CAVE_HEIGHT+INFO_HEIGHT); y++) 
+	{
+		for(int x = 0; x < CAVE_WIDTH; x++) 
+		{
+			display[x][y]=BD_STEELWALL;
+		}
+	}
+
+	if((bd_game->DiamondsRequired - bd_game->DiamondsCollected) > 0)
+		render_num(bd_game->DiamondsRequired - bd_game->DiamondsCollected,1,22,3,0,BD_DIAMOND,BD_BOULDER,display);
+		
+	render_num(bd_game->CaveTime - (bd_game->Tick / 15),28,22,3,0,BD_MAGICWALL,BD_BOULDER,display);
 }
 
