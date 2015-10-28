@@ -70,16 +70,6 @@ void sdl_deinit(void)
 	SDL_Quit();
 }
 
-//static int current_time;
-
-void sdl_loop(const void* pixels)
-{
-
-	SDL_UpdateTexture(texture, NULL, pixels, row * sizeof(Uint32));//update only the updated rects
-	//	SDL_RenderClear(renderer);//neccessary?
-	SDL_RenderCopy(renderer, texture, NULL, NULL);
-	SDL_RenderPresent(renderer);
-}
 
 static int keymap;
 static int releasemap;
@@ -126,8 +116,13 @@ static void keydown(int key)
 	ackmap &= ~(1 << key);
 }
 
-int sdl_handle_events(void)
+int sdl_handle_events(const void* pixels)
 {
+	SDL_UpdateTexture(texture, NULL, pixels, row * sizeof(Uint32));//update only the updated rects
+	//	SDL_RenderClear(renderer);//neccessary?
+	SDL_RenderCopy(renderer, texture, NULL, NULL);
+	SDL_RenderPresent(renderer);
+	
 	SDL_Event ev;
 	while(SDL_PollEvent(&ev)) 
 	{
@@ -209,4 +204,5 @@ int sdl_handle_events(void)
 		}
 	}
 	return 1;
+	
 }

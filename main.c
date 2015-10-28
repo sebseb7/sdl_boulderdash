@@ -32,14 +32,10 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 	int curr_cave = 0;
 	struct bd_game_struct_t* bd_game = bd_game_initialize(curr_cave,curr_level);
 
-	int running = 1;
-
 	int start_tick = SDL_GetTicks();
 
-	while(running) 
+	while(sdl_handle_events(pixelarray)) 
 	{
-		running = sdl_handle_events();
-
 		int current_tick = SDL_GetTicks();
 
 		while( (current_tick - start_tick) > 64)
@@ -71,12 +67,6 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 					}
 			}
 		}
-
-		sdl_loop(pixelarray);
-		/*
-		 *try: SDL_RenderFillRects(SDL_Renderer*   renderer,const SDL_Rect* rects,int             count)
-		 *
-		 */
 	}
 	free(pixelarray);
 	sdl_deinit();
