@@ -33,9 +33,9 @@ void draw_point(int x,int y,int item,int field[CAVE_WIDTH][CAVE_HEIGHT])
 }
 void draw_fillrect(int x1,int y1,int x2, int y2,int item,int field[CAVE_WIDTH][CAVE_HEIGHT])
 {
-	for(int x=x1;x<=x2;x++)
+	for(int x=x1;x<=(x2);x++)
 	{
-		for(int y=y1;y<=y2;y++)
+		for(int y=y1;y<=(y2);y++)
 		{
 			field[x][y]=item;
 		}
