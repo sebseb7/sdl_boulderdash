@@ -255,6 +255,11 @@ void get_colors(int type,int tick,int* colors)
 			colors[1]=6;
 			colors[2]=86+(2*sinlut64[(tick+5)&63]);
 			break;
+		case BD_COLOR_PURPLE:
+			colors[0]=86+10;
+			colors[1]=6;
+			colors[2]=86+10;
+			break;
 		case BD_ROCKFORD:
 		case BD_ROCKFORDgrab:
 			colors[0]=158;

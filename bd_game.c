@@ -306,6 +306,12 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr)
 							explode(new_cavemap,x,y);
 							break;
 						}
+						if((bd_game->Won==0)&&((bd_game->CaveTime - (bd_game->Tick / 15)) < 1))
+						{
+							bd_game->Lost=1;
+							explode(new_cavemap,x,y);
+							break;
+						}
 
 						if(getkey(1))
 						{
@@ -675,8 +681,9 @@ void bd_game_render(struct bd_game_struct_t* bd_game,char display[CAVE_WIDTH][(I
 	}
 
 	if((bd_game->DiamondsRequired - bd_game->DiamondsCollected) > 0)
-		render_num(bd_game->DiamondsRequired - bd_game->DiamondsCollected,1,22,3,0,BD_DIAMOND,BD_BOULDER,display);
-		
-	render_num(bd_game->CaveTime - (bd_game->Tick / 15),28,22,3,0,BD_MAGICWALL,BD_BOULDER,display);
+		render_num(bd_game->DiamondsRequired - bd_game->DiamondsCollected,1,22,3,0,BD_COLOR_PURPLE,BD_BOULDER,display);
+
+	if((bd_game->CaveTime - (bd_game->Tick / 15)) > 0)
+		render_num(bd_game->CaveTime - (bd_game->Tick / 15),28,22,3,0,BD_MAGICWALL,BD_BOULDER,display);
 }
 
