@@ -132,11 +132,11 @@ int sdl_handle_events(const void* pixels)
 	SDL_RenderCopy(renderer, texture, NULL, NULL);
 	SDL_RenderPresent(renderer);
 
-	// limit to 60fps
+	// limit to fps
 	int current_tick = SDL_GetTicks();
-	if( (current_tick - init_tick) < 16)
+	if( (current_tick - init_tick) < fpsMill)
 	{
-		SDL_Delay(16 - (current_tick - init_tick));
+		SDL_Delay(fpsMill - (current_tick - init_tick));
 	}
 	init_tick = SDL_GetTicks();
 
@@ -223,3 +223,21 @@ int sdl_handle_events(const void* pixels)
 	return 1;
 
 }
+int sdl_limit_fps(int* limiter,int fps)
+{
+	if( *limiter == 0)
+	{
+		*limiter = SDL_GetTicks();
+	}
+
+	int current_tick = SDL_GetTicks();
+
+	if( (current_tick - *limiter) > 125)
+	{
+		current_tick = SDL_GetTicks();
+		*limiter+=125;
+		return 1;	
+	}
+	return 0;
+};
+

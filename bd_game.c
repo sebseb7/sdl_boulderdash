@@ -4,7 +4,6 @@
 
 #include "bd_caves.h"
 #include "bd_game.h"
-#include "main.h"
 
 
 #define BD_UNCOVER_LOOP 9
@@ -233,11 +232,11 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr,int getkey(int))
 							  )
 							{
 								amoeba_possible++;
-								if(((bd_game->AmoebaTime*8) < tick)&&(rand()%25==0))
+								if(((bd_game->AmoebaTime*8) < tick)&&(rand()%15==0))
 								{
 									new_cavemap[x+move_x(dir)][y+move_y(dir)]=BD_AMOEBA;
 								}
-								else if((bd_game->Tick>BD_START_DELAY)&&(rand()%250==0))
+								else if((bd_game->Tick>BD_START_DELAY)&&(rand()%100==0))
 								{
 									new_cavemap[x+move_x(dir)][y+move_y(dir)]=BD_AMOEBA;
 								}
