@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "bd_caves.h"
 #include "bd_game.h"
 #include "main.h"
 
@@ -9,8 +10,8 @@
 #define BD_UNCOVER_LOOP 18
 #define BD_START_DELAY 30
 
-extern int bd_cave_data[];
-extern int bd_cave_start_idx[];
+extern const int bd_cave_data[];
+extern const int bd_cave_start_idx[];
 
 struct bd_game_struct_t* bd_game_initialize(int level,int difficulty)
 {
@@ -128,7 +129,7 @@ static void explode(int map[CAVE_WIDTH][CAVE_HEIGHT],int x,int y)
 
 }
 
-void bd_game_process(struct bd_game_struct_t** bd_game_ptr)
+void bd_game_process(struct bd_game_struct_t** bd_game_ptr,int getkey(int))
 {
 	struct bd_game_struct_t* bd_game = *bd_game_ptr;
 	bd_game->Tick++;

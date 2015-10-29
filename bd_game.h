@@ -34,7 +34,7 @@ struct bd_game_struct_t
 
 struct bd_game_struct_t* bd_game_initialize(int level,int difficulty);
 
-void bd_game_process(struct bd_game_struct_t** bd_game);
+void bd_game_process(struct bd_game_struct_t** bd_game,int getkey(int));
 void bd_game_render(struct bd_game_struct_t* bd_game,unsigned int* pixelbuffer,int zoom);
 
 #endif
