@@ -693,7 +693,7 @@ void bd_game_render(struct bd_game_struct_t* bd_game,unsigned int* pixelbuffer,i
 				int colors[3];	
 				get_colors(display[x][y],rendertick,colors);
 
-				uint32_t col = (colors[0]<<16)+(colors[1]<<8)+colors[2];
+				unsigned int col = (colors[0]<<16)+(colors[1]<<8)+colors[2];
 
 				if(pixelbuffer[((y*zoom)*CAVE_WIDTH*zoom)+x*zoom] != col)
 					for(int a = 0; a < zoom;a++)
