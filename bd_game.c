@@ -7,8 +7,8 @@
 #include "main.h"
 
 
-#define BD_UNCOVER_LOOP 18
-#define BD_START_DELAY 30
+#define BD_UNCOVER_LOOP 9
+#define BD_START_DELAY 12
 
 extern const int bd_cave_data[];
 extern const int bd_cave_start_idx[];
@@ -137,8 +137,8 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr,int getkey(int))
 
 
 
-	int move_tick = tick%2;
-	int fall_tick = move_tick;
+	int move_tick = 0;
+	int fall_tick = 0;
 	int expl_tick = 0;
 
 	if(getkey(6))
@@ -193,32 +193,8 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr,int getkey(int))
 			return;
 		}
 	}
-	//int uncovered = 1;
 
 
-	if(tick < BD_UNCOVER_LOOP)
-	{
-		for(int line=0;line < CAVE_HEIGHT;line++)
-		{
-			int pos = rand()%CAVE_WIDTH;
-			bd_game->covered[pos][line] = 0;
-			pos = rand()%CAVE_WIDTH;
-			bd_game->covered[pos][line] = 0;
-			pos = rand()%CAVE_WIDTH;
-			bd_game->covered[pos][line] = 0;
-			pos = rand()%CAVE_WIDTH;
-			bd_game->covered[pos][line] = 0;
-			pos = rand()%CAVE_WIDTH;
-			bd_game->covered[pos][line] = 0;
-			pos = rand()%CAVE_WIDTH;
-			bd_game->covered[pos][line] = 0;
-			pos = rand()%CAVE_WIDTH;
-			bd_game->covered[pos][line] = 0;
-			pos = rand()%CAVE_WIDTH;
-			bd_game->covered[pos][line] = 0;
-		}
-		//uncovered=0;
-	}
 
 	int new_cavemap[CAVE_WIDTH][CAVE_HEIGHT];
 	for(int y = 0; y < CAVE_HEIGHT; y++) 
@@ -257,7 +233,7 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr,int getkey(int))
 							  )
 							{
 								amoeba_possible++;
-								if(((bd_game->AmoebaTime*15) < tick)&&(rand()%25==0))
+								if(((bd_game->AmoebaTime*8) < tick)&&(rand()%25==0))
 								{
 									new_cavemap[x+move_x(dir)][y+move_y(dir)]=BD_AMOEBA;
 								}
@@ -307,7 +283,7 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr,int getkey(int))
 							explode(new_cavemap,x,y);
 							break;
 						}
-						if((bd_game->Won==0)&&((bd_game->CaveTime - (bd_game->Tick / 15)) < 1))
+						if((bd_game->Won==0)&&((bd_game->CaveTime - (bd_game->Tick / 8)) < 1))
 						{
 							bd_game->Lost=1;
 							explode(new_cavemap,x,y);
@@ -642,8 +618,27 @@ static void render_num(int number,int x,int y,int length,int pad, int typea, int
 
 }
 
+
+int rendertick;
+
 void bd_game_render(struct bd_game_struct_t* bd_game,unsigned int* pixelbuffer,int zoom)
 {
+	rendertick++;
+
+	if(bd_game->Tick < BD_UNCOVER_LOOP)
+	{
+		for(int line=0;line < CAVE_HEIGHT;line++)
+		{
+			int pos = rand()%CAVE_WIDTH;
+			bd_game->covered[pos][line] = 0;
+			pos = rand()%CAVE_WIDTH;
+			bd_game->covered[pos][line] = 0;
+			pos = rand()%CAVE_WIDTH;
+			bd_game->covered[pos][line] = 0;
+			pos = rand()%CAVE_WIDTH;
+			bd_game->covered[pos][line] = 0;
+		}
+	}
 	char display[CAVE_WIDTH][(INFO_HEIGHT+CAVE_HEIGHT)];
 	memset(display,0,(INFO_HEIGHT+CAVE_HEIGHT) * CAVE_WIDTH);
 	
@@ -686,8 +681,8 @@ void bd_game_render(struct bd_game_struct_t* bd_game,unsigned int* pixelbuffer,i
 	if((bd_game->DiamondsRequired - bd_game->DiamondsCollected) > 0)
 		render_num(bd_game->DiamondsRequired - bd_game->DiamondsCollected,1,22,3,0,BD_COLOR_PURPLE,BD_BOULDER,display);
 
-	if((bd_game->CaveTime - (bd_game->Tick / 15)) > 0)
-		render_num(bd_game->CaveTime - (bd_game->Tick / 15),28,22,3,0,BD_MAGICWALL,BD_BOULDER,display);
+	if((bd_game->CaveTime - (bd_game->Tick / 8)) > 0)
+		render_num(bd_game->CaveTime - (bd_game->Tick / 8),28,22,3,0,BD_MAGICWALL,BD_BOULDER,display);
 	
 
 
@@ -697,7 +692,7 @@ void bd_game_render(struct bd_game_struct_t* bd_game,unsigned int* pixelbuffer,i
 			for(int x = 0; x < CAVE_WIDTH; x++) 
 			{
 				int colors[3];	
-				get_colors(display[x][y],bd_game->Tick,colors);
+				get_colors(display[x][y],rendertick,colors);
 
 				uint32_t col = (colors[0]<<16)+(colors[1]<<8)+colors[2];
 

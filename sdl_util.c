@@ -3,6 +3,7 @@
 #include "sdl_util.h"
 
 
+static unsigned int* pixelbuffer;
 static SDL_Window* window;
 static SDL_Renderer* renderer;
 static SDL_Texture* texture;
@@ -39,8 +40,10 @@ static void SetSDLIcon(SDL_Window* window)
 	SDL_FreeSurface(icon);
 }
 
-void sdl_init(int h, int v,const char* title, int fps)
+unsigned int* sdl_init(int h, int v,const char* title, int fps)
 {
+	pixelbuffer = malloc(h*v*sizeof(uint32_t));
+
 	SDL_EnableScreenSaver();
 	window = SDL_CreateWindow( title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, h,v, SDL_WINDOW_SHOWN );
 	SetSDLIcon(window);
@@ -49,6 +52,8 @@ void sdl_init(int h, int v,const char* title, int fps)
 	fpsMill = 1000/fps;
 	initialized=1;
 	row=h;
+
+	return pixelbuffer;
 };
 
 void sdl_windowsize(int x,int y)
@@ -68,6 +73,7 @@ void sdl_deinit(void)
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
+	free(pixelbuffer);
 }
 
 
