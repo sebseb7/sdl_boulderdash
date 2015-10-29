@@ -578,7 +578,7 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr)
 
 
 
-static uint16_t font5x3[] = {32319,17393,24253,32437,31879,30391,29343,31905,32447,31911};
+static unsigned int font5x3[] = {32319,17393,24253,32437,31879,30391,29343,31905,32447,31911};
 
 void render_digit_5x3(int x,int y, int digit,int typea, int typeb,char display[CAVE_WIDTH][(INFO_HEIGHT+CAVE_HEIGHT)])
 {
@@ -604,7 +604,7 @@ void render_digit_5x3(int x,int y, int digit,int typea, int typeb,char display[C
 	}
 }
 
-void render_digits_5x3(uint16_t x, uint16_t y, const char *text, int typea, int typeb,char display[CAVE_WIDTH][(INFO_HEIGHT+CAVE_HEIGHT)])
+void render_digits_5x3(int x, int y, const char *text, int typea, int typeb,char display[CAVE_WIDTH][(INFO_HEIGHT+CAVE_HEIGHT)])
 {
 	while (*text)
 	{
