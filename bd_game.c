@@ -641,8 +641,10 @@ static void render_num(int number,int x,int y,int length,int pad, int typea, int
 
 }
 
-void bd_game_render(struct bd_game_struct_t* bd_game,char display[CAVE_WIDTH][(INFO_HEIGHT+CAVE_HEIGHT)])
+void bd_game_render(struct bd_game_struct_t* bd_game,unsigned int* pixelbuffer,int zoom)
 {
+	char display[CAVE_WIDTH][(INFO_HEIGHT+CAVE_HEIGHT)];
+	memset(display,0,(INFO_HEIGHT+CAVE_HEIGHT) * CAVE_WIDTH);
 	
 	//cave part:
 
@@ -685,5 +687,28 @@ void bd_game_render(struct bd_game_struct_t* bd_game,char display[CAVE_WIDTH][(I
 
 	if((bd_game->CaveTime - (bd_game->Tick / 15)) > 0)
 		render_num(bd_game->CaveTime - (bd_game->Tick / 15),28,22,3,0,BD_MAGICWALL,BD_BOULDER,display);
+	
+
+
+	// render to pixelbuffer
+		for(int y = 0; y < (INFO_HEIGHT+CAVE_HEIGHT); y++) 
+		{
+			for(int x = 0; x < CAVE_WIDTH; x++) 
+			{
+				int colors[3];	
+				get_colors(display[x][y],bd_game->Tick,colors);
+
+				uint32_t col = (colors[0]<<16)+(colors[1]<<8)+colors[2];
+
+				if(pixelbuffer[((y*zoom)*CAVE_WIDTH*zoom)+x*zoom] != col)
+					for(int a = 0; a < zoom;a++)
+					{
+						for(int b = 0;b < zoom;b++)
+						{
+							pixelbuffer[((y*zoom+a)*CAVE_WIDTH*zoom)+x*zoom+b] = col;
+						}
+					}
+			}
+		}
 }
 

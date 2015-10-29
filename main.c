@@ -11,32 +11,23 @@
 #include "SDL.h"
 #include "main.h"
 
-#define SDL_ZOOM 25
-
 int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unused__))) 
 {
 	srand(time(NULL));
 
-	int zoom = SDL_ZOOM;
+	int zoom = 25;
 
 	sdl_init(CAVE_WIDTH*zoom, (INFO_HEIGHT+CAVE_HEIGHT)*zoom,"Boudlerdash",60);
 
 
-	uint32_t* pixelarray = malloc ((INFO_HEIGHT+CAVE_HEIGHT)*zoom * CAVE_WIDTH * zoom * sizeof(uint32_t));
-	memset(pixelarray,0,(INFO_HEIGHT+CAVE_HEIGHT) * zoom * CAVE_WIDTH * zoom);
+	unsigned int* pixelbuffer = malloc ((INFO_HEIGHT+CAVE_HEIGHT)*zoom * CAVE_WIDTH * zoom * sizeof(uint32_t));
+	memset(pixelbuffer,0,(INFO_HEIGHT+CAVE_HEIGHT) * zoom * CAVE_WIDTH * zoom);
 
-	char display[CAVE_WIDTH][(INFO_HEIGHT+CAVE_HEIGHT)];
-	memset(display,0,(INFO_HEIGHT+CAVE_HEIGHT) * CAVE_WIDTH);
-
-	int curr_level = 0;
-	int curr_cave = 0;
-	struct bd_game_struct_t* bd_game = bd_game_initialize(curr_cave,curr_level);
+	struct bd_game_struct_t* bd_game = bd_game_initialize(0,0);
 
 	int start_tick = SDL_GetTicks();
 
-	//open_url("http://google.de");
-
-	while(sdl_handle_events(pixelarray)) 
+	while(sdl_handle_events(pixelbuffer)) 
 	{
 		int current_tick = SDL_GetTicks();
 
@@ -48,29 +39,10 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 			start_tick+=64;
 		}
 
-		bd_game_render(bd_game,display);
+		bd_game_render(bd_game,pixelbuffer,zoom);
 
-		for(int y = 0; y < (INFO_HEIGHT+CAVE_HEIGHT); y++) 
-		{
-			for(int x = 0; x < CAVE_WIDTH; x++) 
-			{
-				int colors[3];	
-				get_colors(display[x][y],bd_game->Tick,colors);
-
-				uint32_t col = (colors[0]<<16)+(colors[1]<<8)+colors[2];
-
-				if(pixelarray[((y*zoom)*CAVE_WIDTH*zoom)+x*zoom] != col)
-					for(int a = 0; a < zoom;a++)
-					{
-						for(int b = 0;b < zoom;b++)
-						{
-							pixelarray[((y*zoom+a)*CAVE_WIDTH*zoom)+x*zoom+b] = col;
-						}
-					}
-			}
-		}
 	}
-	free(pixelarray);
+	free(pixelbuffer);
 	sdl_deinit();
 	return 0;
 }
