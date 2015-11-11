@@ -10,7 +10,7 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 {
 	srand(time(NULL));
 
-	int zoom = 13;
+	int zoom = 21;
 
 	unsigned int* pixelbuffer = sdl_init(CAVE_WIDTH*zoom, (INFO_HEIGHT+CAVE_HEIGHT)*zoom,"Boulderdash",60);
 
