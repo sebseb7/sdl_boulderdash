@@ -11,5 +11,5 @@ deploy:
   file: bd_windows.zip
   on:
     tags: true
-    repo: sebseb7/boulderdash_test
+    repo: sebseb7/sdl_boulderdash
     all_branches: true

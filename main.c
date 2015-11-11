@@ -10,9 +10,9 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 {
 	srand(time(NULL));
 
-	int zoom = 25;
+	int zoom = 13;
 
-	unsigned int* pixelbuffer = sdl_init(CAVE_WIDTH*zoom, (INFO_HEIGHT+CAVE_HEIGHT)*zoom,"Boudlerdash",60);
+	unsigned int* pixelbuffer = sdl_init(CAVE_WIDTH*zoom, (INFO_HEIGHT+CAVE_HEIGHT)*zoom,"Boulderdash",60);
 
 	struct bd_game_struct_t* bd_game = bd_game_initialize(0,0);
 
