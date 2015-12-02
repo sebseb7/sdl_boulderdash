@@ -71,11 +71,11 @@ struct cave_struct_t
 int render_field(int cave,int level,int field[CAVE_WIDTH][CAVE_HEIGHT]);
 
 void NextRandom(int *RandSeed1, int *RandSeed2);
-void draw_fillrect(int x1,int y1,int x2, int y2,int item,int field[CAVE_WIDTH][CAVE_HEIGHT]);
-void draw_fillrect2(int x1,int y1,int x2, int y2,int item,int item2,int field[CAVE_WIDTH][CAVE_HEIGHT]);
-void draw_point(int x,int y,int item,int field[CAVE_WIDTH][CAVE_HEIGHT]);
-void draw_raster(int x1,int y1,int count_x, int count_y,int offset_x,int offset_y,int item,int field[CAVE_WIDTH][CAVE_HEIGHT]);
-void draw_rect(int x1,int y1,int x2, int y2,int item,int field[CAVE_WIDTH][CAVE_HEIGHT]);
+void bd_draw_fillrect(int x1,int y1,int x2, int y2,int item,int field[CAVE_WIDTH][CAVE_HEIGHT]);
+void bd_draw_fillrect2(int x1,int y1,int x2, int y2,int item,int item2,int field[CAVE_WIDTH][CAVE_HEIGHT]);
+void bd_draw_point(int x,int y,int item,int field[CAVE_WIDTH][CAVE_HEIGHT]);
+void bd_draw_raster(int x1,int y1,int count_x, int count_y,int offset_x,int offset_y,int item,int field[CAVE_WIDTH][CAVE_HEIGHT]);
+void bd_draw_rect(int x1,int y1,int x2, int y2,int item,int field[CAVE_WIDTH][CAVE_HEIGHT]);
 
 
 int firefly_left(int firefly);

@@ -27,11 +27,11 @@ void NextRandom(int *RandSeed1, int *RandSeed2)
 	*RandSeed1 = result & 0x00FF;
 }
 			
-void draw_point(int x,int y,int item,int field[CAVE_WIDTH][CAVE_HEIGHT])
+void bd_draw_point(int x,int y,int item,int field[CAVE_WIDTH][CAVE_HEIGHT])
 {
 	field[x][y]=item;
 }
-void draw_fillrect(int x1,int y1,int x2, int y2,int item,int field[CAVE_WIDTH][CAVE_HEIGHT])
+void bd_draw_fillrect(int x1,int y1,int x2, int y2,int item,int field[CAVE_WIDTH][CAVE_HEIGHT])
 {
 	for(int x=x1;x<=(x2);x++)
 	{
@@ -41,7 +41,7 @@ void draw_fillrect(int x1,int y1,int x2, int y2,int item,int field[CAVE_WIDTH][C
 		}
 	}
 }
-void draw_rect(int x1,int y1,int x2, int y2,int item,int field[CAVE_WIDTH][CAVE_HEIGHT])
+void bd_draw_rect(int x1,int y1,int x2, int y2,int item,int field[CAVE_WIDTH][CAVE_HEIGHT])
 {
 	for(int x=x1;x<=x2;x++)
 	{
@@ -52,7 +52,7 @@ void draw_rect(int x1,int y1,int x2, int y2,int item,int field[CAVE_WIDTH][CAVE_
 		}
 	}
 }
-void draw_fillrect2(int x1,int y1,int x2, int y2,int item,int item2,int field[CAVE_WIDTH][CAVE_HEIGHT])
+void bd_draw_fillrect2(int x1,int y1,int x2, int y2,int item,int item2,int field[CAVE_WIDTH][CAVE_HEIGHT])
 {
 	for(int x=x1;x<=x2;x++)
 	{
@@ -65,7 +65,7 @@ void draw_fillrect2(int x1,int y1,int x2, int y2,int item,int item2,int field[CA
 		}
 	}
 }
-void draw_raster(int x1,int y1,int count_x, int count_y,int offset_x,int offset_y,int item,int field[CAVE_WIDTH][CAVE_HEIGHT])
+void bd_draw_raster(int x1,int y1,int count_x, int count_y,int offset_x,int offset_y,int item,int field[CAVE_WIDTH][CAVE_HEIGHT])
 {
 	for(int x=0;x<count_x;x++)
 	{
@@ -116,23 +116,23 @@ int render_field(int cave,int level,int field[CAVE_WIDTH][CAVE_HEIGHT])
 		{
 			case BD_DRAW_LINE:
 			case BD_DRAW_FILLRECT:
-				draw_fillrect(*(drawidx+offset+1),*(drawidx+offset+2),*(drawidx+offset+3),*(drawidx+offset+4),*(drawidx+offset+5),field);
+				bd_draw_fillrect(*(drawidx+offset+1),*(drawidx+offset+2),*(drawidx+offset+3),*(drawidx+offset+4),*(drawidx+offset+5),field);
 				offset+=6;
 				break;
 			case BD_DRAW_FILLRECT2:
-				draw_fillrect2(*(drawidx+offset+1),*(drawidx+offset+2),*(drawidx+offset+3),*(drawidx+offset+4),*(drawidx+offset+5),*(drawidx+offset+6),field);
+				bd_draw_fillrect2(*(drawidx+offset+1),*(drawidx+offset+2),*(drawidx+offset+3),*(drawidx+offset+4),*(drawidx+offset+5),*(drawidx+offset+6),field);
 				offset+=7;
 				break;
 			case BD_DRAW_RECTANGLE:
-				draw_rect(*(drawidx+offset+1),*(drawidx+offset+2),*(drawidx+offset+3),*(drawidx+offset+4),*(drawidx+offset+5),field);
+				bd_draw_rect(*(drawidx+offset+1),*(drawidx+offset+2),*(drawidx+offset+3),*(drawidx+offset+4),*(drawidx+offset+5),field);
 				offset+=6;
 				break;
 			case BD_DRAW_POINT:
-				draw_point(*(drawidx+offset+1),*(drawidx+offset+2),*(drawidx+offset+3),field);
+				bd_draw_point(*(drawidx+offset+1),*(drawidx+offset+2),*(drawidx+offset+3),field);
 				offset+=4;
 				break;
 			case BD_DRAW_RASTER:
-				draw_raster(*(drawidx+offset+1),*(drawidx+offset+2),*(drawidx+offset+3),*(drawidx+offset+4),*(drawidx+offset+5),*(drawidx+offset+6),*(drawidx+offset+7),field);
+				bd_draw_raster(*(drawidx+offset+1),*(drawidx+offset+2),*(drawidx+offset+3),*(drawidx+offset+4),*(drawidx+offset+5),*(drawidx+offset+6),*(drawidx+offset+7),field);
 				offset+=8;
 				break;
 		}
