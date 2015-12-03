@@ -160,7 +160,7 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr,int getkey(int))
 			int old_difficulty = bd_game->Difficulty;
 
 			old_cave++;
-			if(old_cave==7)
+			if(old_cave==8)
 			{
 				old_cave=0;
 				old_difficulty++;
