@@ -1,6 +1,5 @@
 bd_test
 bd.exe
-bd.zip
 Boulderdash.app/Contents/Frameworks/SDL2.framework
 Boulderdash.app/Contents/MacOS/bd_osx
 Boulderdash.app/Contents/Resources/iconfile.icns
@@ -8,4 +7,6 @@ SDL2-2.0.4
 bdrc.o
 bd.ico
 bd.rc
+bd_win.zip
+bd_osx.zip
 
