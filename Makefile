@@ -23,7 +23,7 @@ bd_test: bd_icon.c main.c sdl_util.c sdl_util.h bd_lib.c bd_game.c bd_caves.h bd
 	@$(COMPILER) $(FLAGS) main.c bd_lib.c bd_game.c sdl_util.c $(LDFLAGS) -o bd_test 
 
 Boulderdash.app/Contents/MacOS/bd_osx: bd_icon.c main.c sdl_util.c sdl_util.h bd_lib.c bd_game.c bd_caves.h bd_game.h Makefile 
-	@$(COMPILER) -framework SDL2 -I/Library/Frameworks/SDL2.framework/Headers --std=gnu99 main.c bd_lib.c bd_game.c sdl_util.c -o bd_osx 
+	@$(COMPILER) $(FLAGS) main.c bd_lib.c bd_game.c sdl_util.c $(LDFLAGS) -o bd_osx
 	@install_name_tool -change @rpath/SDL2.framework/Versions/A/SDL2 @executable_path/../Frameworks/SDL2.framework/Versions/A/SDL2 bd_osx
 	@makeicns -32 bd_36x36x4.png -out Boulderdash.app/Contents/Resources/iconfile.icns 
 	@mv bd_osx Boulderdash.app/Contents/MacOS
