@@ -46,9 +46,9 @@ bd_win.zip: bd.exe
 	
 
 SDL2-2.0.4:
-	wget https://www.libsdl.org/tmp/release/SDL2-devel-2.0.4-mingw.tar.gz
-	tar -xzf SDL2-devel-2.0.4-mingw.tar.gz
-	rm -f SDL2-devel-2.0.4-mingw.tar.gz
+	wget https://www.libsdl.org/tmp/release/SDL2-2.0.4-mingw.tar.gz
+	tar -xzf SDL2-2.0.4-mingw.tar.gz
+	rm -f SDL2-2.0.4-mingw.tar.gz
 
 
 .PHONY : clean all
