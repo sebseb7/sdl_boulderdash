@@ -644,6 +644,7 @@ void bd_game_render(struct bd_game_struct_t* bd_game,unsigned int* pixelbuffer,i
 			bd_game->covered[pos][line] = 0;
 		}
 	}
+
 	char display[CAVE_WIDTH][(INFO_HEIGHT+CAVE_HEIGHT)];
 	memset(display,0,(INFO_HEIGHT+CAVE_HEIGHT) * CAVE_WIDTH);
 	
