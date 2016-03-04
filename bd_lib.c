@@ -141,6 +141,34 @@ int render_field(int cave,int level,int field[CAVE_WIDTH][CAVE_HEIGHT])
 	return offset;
 }
 
+int butterfly_left(int butterfly)
+{
+	if(butterfly == BD_BUTTERFLYr) return BD_BUTTERFLYd;
+	if(butterfly == BD_BUTTERFLYu) return BD_BUTTERFLYr;
+	if(butterfly == BD_BUTTERFLYl) return BD_BUTTERFLYu;
+	return BD_BUTTERFLYl;
+}
+int butterfly_right(int butterfly)
+{
+	if(butterfly == BD_BUTTERFLYr) return BD_BUTTERFLYu;
+	if(butterfly == BD_BUTTERFLYd) return BD_BUTTERFLYr;
+	if(butterfly == BD_BUTTERFLYl) return BD_BUTTERFLYd;
+	return BD_BUTTERFLYl;
+}
+int butterfly_x(int butterfly)
+{
+	if(butterfly == BD_BUTTERFLYr) return 1;
+	if(butterfly == BD_BUTTERFLYd) return 0;
+	if(butterfly == BD_BUTTERFLYl) return -1;
+	return 0;
+}
+int butterfly_y(int butterfly)
+{
+	if(butterfly == BD_BUTTERFLYr) return 0;
+	if(butterfly == BD_BUTTERFLYd) return 1;
+	if(butterfly == BD_BUTTERFLYl) return 0;
+	return -1;
+}
 int firefly_left(int firefly)
 {
 	if(firefly == BD_FIREFLYr) return BD_FIREFLYt;
@@ -272,6 +300,14 @@ void get_colors(int type,int tick,int* colors)
 			colors[1]=32+(20*sinlut32[tick&31]);
 			colors[2]=32+(20*sinlut32[tick&31]);
 			break;
+		case BD_BUTTERFLYr:
+		case BD_BUTTERFLYl:
+		case BD_BUTTERFLYu:
+		case BD_BUTTERFLYd:
+			colors[0]=32+(20*sinlut32[tick&15]);
+			colors[1]=6;
+			colors[2]=32+(20*sinlut32[tick&15]);
+			break;
 		case BD_EXPLOSION1:
 		case BD_EXPLOSION2:
 		case BD_EXPLOSION3:
@@ -280,6 +316,16 @@ void get_colors(int type,int tick,int* colors)
 			colors[0]=255;
 			colors[1]=((BD_EXPLOSION5-type)*50);
 			colors[2]=0;
+			break;
+		case BD_DEXPLOSION1:
+		case BD_DEXPLOSION2:
+		case BD_DEXPLOSION3:
+		case BD_DEXPLOSION4:
+		case BD_DEXPLOSION5:
+			colors[0]=255;
+			colors[1]=((BD_DEXPLOSION5-type)*30);
+			colors[2]=50;
+			break;
 	}
 }
 

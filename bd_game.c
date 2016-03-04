@@ -129,6 +129,17 @@ static void explode(int map[CAVE_WIDTH][CAVE_HEIGHT],int x,int y)
 
 }
 
+static void dexplode(int map[CAVE_WIDTH][CAVE_HEIGHT],int x,int y)
+{
+
+	for(int dy=-1;dy<2;dy++)
+		for(int dx=-1;dx<2;dx++)
+			if(map[x+dx][y+dy]!=BD_STEELWALL)
+				map[x+dx][y+dy]=BD_DEXPLOSION1;
+
+
+}
+
 void bd_game_process(struct bd_game_struct_t** bd_game_ptr,int getkey(int))
 {
 	struct bd_game_struct_t* bd_game = *bd_game_ptr;
@@ -160,7 +171,7 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr,int getkey(int))
 			int old_difficulty = bd_game->Difficulty;
 
 			old_cave++;
-			if(old_cave==8)
+			if(old_cave==CAVE_COUNT)
 			{
 				old_cave=0;
 				old_difficulty++;
@@ -263,6 +274,21 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr,int getkey(int))
 					if(expl_tick ==0)
 					{
 						new_cavemap[x][y]=BD_SPACE;
+					}
+					break;
+				case BD_DEXPLOSION1:
+				case BD_DEXPLOSION2:
+				case BD_DEXPLOSION3:
+				case BD_DEXPLOSION4:
+					if(expl_tick ==0)
+					{
+						new_cavemap[x][y]=curr_type+1;
+					}
+					break;
+				case BD_DEXPLOSION5:
+					if(expl_tick ==0)
+					{
+						new_cavemap[x][y]=BD_DIAMOND;
 					}
 					break;
 				case BD_INBOX:
@@ -537,6 +563,49 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr,int getkey(int))
 					}
 					break;
 					//there must still be a bug, oberserved a resting diamond on top a freestanding boulder
+				case BD_BUTTERFLYr:
+				case BD_BUTTERFLYl:
+				case BD_BUTTERFLYu:
+				case BD_BUTTERFLYd:
+					if(move_tick ==0)
+					{
+						int dir = butterfly_left(curr_type);
+
+						for(int di = 0; di<4; di++)
+						{
+							if(
+									(new_cavemap[x+move_x(di)][y+move_y(di)] == BD_ROCKFORD)||
+									(new_cavemap[x+move_x(di)][y+move_y(di)] == BD_ROCKFORDgrab)
+							  )
+							{
+								dexplode(new_cavemap,x,y);
+								bd_game->Lost=1;
+							}
+							if(new_cavemap[x+move_x(di)][y+move_y(di)] == BD_AMOEBA)
+							{
+								dexplode(new_cavemap,x,y);
+							}
+						}
+
+						if(new_cavemap[x][y] != BD_DEXPLOSION1)
+						{
+							if(new_cavemap[x+butterfly_x(dir)][y+butterfly_y(dir)] == BD_SPACE)
+							{
+								new_cavemap[x+butterfly_x(dir)][y+butterfly_y(dir)]=dir;
+								new_cavemap[x][y]=BD_SPACE;
+							}
+							else if( new_cavemap[x+butterfly_x(curr_type)][y+butterfly_y(curr_type)] == BD_SPACE)
+							{
+								new_cavemap[x+butterfly_x(curr_type)][y+butterfly_y(curr_type)]=curr_type;
+								new_cavemap[x][y]=BD_SPACE;
+							}
+							else
+							{
+								new_cavemap[x][y]=butterfly_right(curr_type);
+							}
+						}
+					}
+					break;
 			}
 		}
 	}

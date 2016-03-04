@@ -14,7 +14,7 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 
 	unsigned int* pixelbuffer = sdl_init(CAVE_WIDTH*zoom, (INFO_HEIGHT+CAVE_HEIGHT)*zoom,"Boulderdash",60);
 
-	struct bd_game_struct_t* bd_game = bd_game_initialize(0,0);
+	struct bd_game_struct_t* bd_game = bd_game_initialize(8,0);
 
 	int limiter=0;
 

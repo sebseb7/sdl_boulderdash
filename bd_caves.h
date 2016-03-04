@@ -3,7 +3,9 @@
 
 #include "bd_lib.h"
 
-const int bd_cave_start_idx[] = {0,155,276,357,451,501,572,690};
+#define CAVE_COUNT 9
+
+const int bd_cave_start_idx[] = {0,155,276,357,451,501,572,690,778};
 
 const int bd_cave_data[] = {
 
@@ -244,6 +246,24 @@ Rectangle=0 0 39 21 STEELWALL
 Point=9 11 INBOX
 Point=12 11 OUTBOX
 */
+
+	5,50,
+	30,40,50,60,70,
+	200,160,120,100,90,
+	BD_COLOR_GREEN,BD_COLOR_BROWN,BD_COLOR_WHITE,
+	0,0,0,0,0,
+	0,0,0,0,0,0,0,0,
+	0,120,9,
+
+	BD_DRAW_RECTANGLE,2,2,13,9,BD_SPACE,
+	BD_DRAW_RASTER,4,9,5,1,2,1,BD_BUTTERFLYu,
+	BD_DRAW_RASTER,13,2,1,4,1,2,BD_BUTTERFLYl,
+	BD_DRAW_RASTER,3,2,5,1,2,1,BD_BUTTERFLYd,
+	BD_DRAW_LINE,20,1,20,15,BD_WALL,
+	BD_DRAW_LINE,25,1,34,1,BD_AMOEBA,
+	BD_DRAW_POINT,1,1,BD_INBOX,
+	BD_DRAW_POINT,19,4,BD_OUTBOX
+
 
 /*
 DiamondValue=5 10

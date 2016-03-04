@@ -12,6 +12,10 @@ enum {
 	BD_FIREFLYl,
 	BD_FIREFLYt,
 	BD_FIREFLYd,
+	BD_BUTTERFLYr,
+	BD_BUTTERFLYl,
+	BD_BUTTERFLYu,
+	BD_BUTTERFLYd,
 	BD_BOULDER,
 	BD_BOULDERfall,
 	BD_DIAMOND,
@@ -29,6 +33,11 @@ enum {
 	BD_EXPLOSION3,
 	BD_EXPLOSION4,
 	BD_EXPLOSION5,
+	BD_DEXPLOSION1,
+	BD_DEXPLOSION2,
+	BD_DEXPLOSION3,
+	BD_DEXPLOSION4,
+	BD_DEXPLOSION5,
 	BD_DRAW_LINE,
 	BD_DRAW_POINT,
 	BD_DRAW_FILLRECT,
@@ -78,6 +87,10 @@ void bd_draw_raster(int x1,int y1,int count_x, int count_y,int offset_x,int offs
 void bd_draw_rect(int x1,int y1,int x2, int y2,int item,int field[CAVE_WIDTH][CAVE_HEIGHT]);
 
 
+int butterfly_left(int butterfly);
+int butterfly_right(int butterfly);
+int butterfly_x(int butterfly);
+int butterfly_y(int butterfly);
 int firefly_left(int firefly);
 int firefly_right(int firefly);
 int firefly_x(int firefly);
