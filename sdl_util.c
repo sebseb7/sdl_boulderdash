@@ -48,7 +48,8 @@ unsigned int* sdl_init(int h, int v,const char* title, int fps)
 	window = SDL_CreateWindow( title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, h,v, SDL_WINDOW_SHOWN );
 	SetSDLIcon(window);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED| SDL_RENDERER_PRESENTVSYNC);
-	texture = SDL_CreateTexture(renderer,SDL_PIXELFORMAT_ARGB8888,SDL_TEXTUREACCESS_STREAMING,h,v);
+	//renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
+	texture = SDL_CreateTexture(renderer,SDL_PIXELFORMAT_ARGB8888,SDL_TEXTUREACCESS_STATIC,h,v);
 	fpsMill = 1000/fps;
 	initialized=1;
 	row=h;
@@ -122,7 +123,43 @@ static void keydown(int key)
 	ackmap &= ~(1 << key);
 }
 
-int init_tick;
+static unsigned int touch_avail = 0;
+static unsigned int motion_start = 0;
+static int motion_x = 0;
+static int motion_y = 0;
+static unsigned int touch_x = 0;
+static unsigned int touch_y = 0;
+
+static void touch_event(unsigned int x,unsigned int y)
+{
+	touch_x = x;
+	touch_y = y;
+	touch_avail=1;
+}
+
+static void touch_end_move(void)
+{
+	motion_start=0;
+	keyup(0);
+	keyup(1);
+	keyup(2);
+	keyup(3);
+}
+
+unsigned int get_touch(unsigned int *x, unsigned int *y)
+{
+	if(touch_avail == 1)
+	{
+		*x = touch_x;
+		*y = touch_y;
+		touch_avail = 0;
+		return 1;
+	}
+	return 0;
+}
+
+
+static int init_tick;
 
 int sdl_handle_events(const void* pixels)
 {
@@ -146,6 +183,68 @@ int sdl_handle_events(const void* pixels)
 		switch(ev.type) {
 			case SDL_QUIT:
 				return 0;
+				break;
+			case SDL_MOUSEMOTION:
+				if(motion_start==1)
+				{
+					motion_x+=ev.motion.xrel;
+					motion_y+=ev.motion.yrel;
+					if(motion_y > 40)
+					{
+						keyup(0);
+						keyup(1);
+						keyup(2);
+						keyup(3);
+						keydown(2);
+						motion_x=0;
+						motion_y=0;
+					}
+					if(motion_y < -40)
+					{
+						keyup(0);
+						keyup(1);
+						keyup(2);
+						keyup(3);
+						keydown(0);
+						motion_x=0;
+						motion_y=0;
+					}
+					if(motion_x > 40)
+					{
+						keyup(0);
+						keyup(1);
+						keyup(2);
+						keyup(3);
+						keydown(1);
+						motion_x=0;
+						motion_y=0;
+					}
+					if(motion_x < -40)
+					{
+						keyup(0);
+						keyup(1);
+						keyup(2);
+						keyup(3);
+						keydown(3);
+						motion_x=0;
+						motion_y=0;
+					}
+				}
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				if(ev.button.button == SDL_BUTTON_LEFT)
+				{
+					motion_start=1;
+					motion_x=0;
+					motion_y=0;
+					touch_event(ev.button.x,ev.button.y);
+				}
+				break;
+			case SDL_MOUSEBUTTONUP:
+				if(ev.button.button == SDL_BUTTON_LEFT)
+				{
+					touch_end_move();
+				}
 				break;
 			case SDL_KEYUP:
 				switch(ev.key.keysym.sym) 

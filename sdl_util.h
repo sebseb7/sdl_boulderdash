@@ -9,4 +9,6 @@ void release_upped_keys(void);
 int getkey(int key);
 int sdl_limit_fps(int* limiter,int fps);
 
+unsigned int get_touch(unsigned int *x, unsigned int *y);
+
 #endif
