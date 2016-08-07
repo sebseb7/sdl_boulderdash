@@ -18,6 +18,7 @@ clean:
 	rm -f Boulderdash.app/Contents/MacOS/bd_osx
 	rm -f Boulderdash.app/Contents/Resources/iconfile.icns
 	rm -f bdrc.o
+	rm -rf SDL2-2.0.4/build
 
 bd_test: bd_icon.c main.c sdl_util.c sdl_util.h bd_lib.c bd_game.c bd_caves.h bd_game.h Makefile 
 	@$(COMPILER) $(FLAGS) main.c bd_lib.c bd_game.c sdl_util.c $(LDFLAGS) -o bd_test 
@@ -49,9 +50,16 @@ SDL2-2.0.4-mingw:
 	tar -C SDL2-2.0.4-mingw -xzf SDL2-devel-2.0.4-mingw.tar.gz
 	rm -f SDL2-devel-2.0.4-mingw.tar.gz
 
+android: SDL2-2.0.4 Makefile
+	SDL2-2.0.4/build-scripts/androidbuild.sh net.exse.sdl_boulderdash main.c bd_icon.c bd_lib.c bd_game.c sdl_util.c bd_caves.h bd_game.h bd_lib.h sdl_util.h
+	echo "android avd && emulator -avd .."
+
 SDL2-2.0.4:
 	wget https://www.libsdl.org/release/SDL2-2.0.4.tar.gz
 	tar -xzf SDL2-2.0.4.tar.gz
+	cd SDL2-2.0.4
+	patch -p1 -R < ../android.patch
+	cd ..
 	rm -f SDL2-2.0.4.tar.gz
 
 .PHONY : clean all

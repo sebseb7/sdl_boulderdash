@@ -2,6 +2,7 @@
 #include <time.h>
 #include <stdlib.h>
 
+#include "SDL.h" //only for android
 
 #include "bd_game.h"
 #include "sdl_util.h"
