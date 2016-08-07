@@ -47,7 +47,10 @@ bd_win.zip: bd.exe
 	
 SDL2-2.0.4-mingw:
 	wget https://www.libsdl.org/release/SDL2-devel-2.0.4-mingw.tar.gz
-	tar -C SDL2-2.0.4-mingw -xzf SDL2-devel-2.0.4-mingw.tar.gz
+	mkdir tmp
+	tar -C tmp -xzf SDL2-devel-2.0.4-mingw.tar.gz
+	mv tmp/SDL2-2.0.4 SDL2-2.0.4-mingw
+	rm -rf tmp
 	rm -f SDL2-devel-2.0.4-mingw.tar.gz
 
 android: SDL2-2.0.4 Makefile
