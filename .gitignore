@@ -1,9 +1,11 @@
+.DS_Store
 bd_test
 bd.exe
 Boulderdash.app/Contents/Frameworks/SDL2.framework
 Boulderdash.app/Contents/MacOS/bd_osx
 Boulderdash.app/Contents/Resources/iconfile.icns
 SDL2-2.0.4
+SDL2-2.0.4-mingw
 bdrc.o
 bd.ico
 bd.rc
