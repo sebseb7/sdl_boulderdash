@@ -19,6 +19,7 @@ clean:
 	rm -f Boulderdash.app/Contents/Resources/iconfile.icns
 	rm -f bdrc.o
 	rm -rf SDL2-2.0.4/build
+	rm -f SDL2-2.0.4.tar.gz
 
 bd_test: bd_icon.c main.c sdl_util.c sdl_util.h bd_lib.c bd_game.c bd_caves.h bd_game.h Makefile 
 	@$(COMPILER) $(FLAGS) main.c bd_lib.c bd_game.c sdl_util.c $(LDFLAGS) -o bd_test 
@@ -56,14 +57,17 @@ SDL2-2.0.4-mingw:
 android: SDL2-2.0.4 Makefile
 	SDL2-2.0.4/build-scripts/androidbuild.sh net.exse.sdl_boulderdash main.c bd_icon.c bd_lib.c bd_game.c sdl_util.c bd_caves.h bd_game.h bd_lib.h sdl_util.h
 	echo "android avd && emulator -avd .."
-
-SDL2-2.0.4:
+	
+SDL2-2.0.4.tar.gz:
 	wget https://www.libsdl.org/release/SDL2-2.0.4.tar.gz
+
+SDL2-2.0.4: SDL2-2.0.4.tar.gz
 	tar -xzf SDL2-2.0.4.tar.gz
-	cd SDL2-2.0.4
-	patch -p1 -R < ../android.patch
-	cd ..
-	rm -f SDL2-2.0.4.tar.gz
+	cd SDL2-2.0.4 && patch -p1 < ../android.patch
+	cp bd_36x36x4.png SDL2-2.0.4/android-project/res/drawable-xxhdpi/ic_launcher.png
+	cp bd_36x36x4.png SDL2-2.0.4/android-project/res/drawable-xhdpi/ic_launcher.png
+	cp bd_36x36x4.png SDL2-2.0.4/android-project/res/drawable-hdpi/ic_launcher.png
+	cp bd_36x36x4.png SDL2-2.0.4/android-project/res/drawable-mdpi/ic_launcher.png
 
 .PHONY : clean all
 
