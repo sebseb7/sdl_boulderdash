@@ -1,0 +1,6 @@
+PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+PATH="/Users/seb/Library/Android/sdk/ndk-bundle:$PATH"      # for 'ndk-build'
+PATH="/Users/seb/Library/Android/sdk/tools:$PATH"           # for 'android'
+PATH="/Users/seb/Library/Android/sdk/platform-tools:$PATH"  # for 'adb'
+PATH="/Users/seb/gcc-arm-none-eabi-5_4-2016q2/bin:$PATH" 
+export ANDROID_HOME="/Users/seb/Library/Android/sdk"
