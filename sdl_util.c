@@ -43,6 +43,8 @@ static void SetSDLIcon(SDL_Window* window)
 unsigned int* sdl_init(int h, int v,const char* title, int fps)
 {
 	pixelbuffer = malloc(h*v*sizeof(uint32_t));
+	memset(pixelbuffer,0,h*v*sizeof(uint32_t));
+
 
 	SDL_EnableScreenSaver();
 	window = SDL_CreateWindow( title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, h,v, SDL_WINDOW_SHOWN );

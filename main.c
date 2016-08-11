@@ -47,6 +47,7 @@ int main(int argc __attribute__((__unused__)), char *argv[] __attribute__((__unu
 
 	}
 	sdl_deinit();
+	free(bd_game);
 	return 0;
 }
 
