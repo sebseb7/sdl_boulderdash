@@ -54,9 +54,19 @@ SDL2-2.0.4-mingw:
 	rm -rf tmp
 	rm -f SDL2-devel-2.0.4-mingw.tar.gz
 
-android: SDL2-2.0.4 Makefile
+android: Makefile SDL2-2.0.4/build/net.exse.sdl_boulderdash/bin/net.exse.sdl_boulderdash-debug.apk
+
+SDL2-2.0.4/build/net.exse.sdl_boulderdash/bin/net.exse.sdl_boulderdash-debug.apk: Makefile SDL2-2.0.4/build/net.exse.sdl_boulderdash/libs/x86/libmain.so
+	ant -f SDL2-2.0.4/build/net.exse.sdl_boulderdash/build.xml debug
+
+SDL2-2.0.4/build/net.exse.sdl_boulderdash/libs/x86/libmain.so: Makefile SDL2-2.0.4/build/net.exse.sdl_boulderdash/local.properties main.c bd_icon.c bd_lib.c bd_game.c sdl_util.c bd_caves.h bd_game.h bd_lib.h sdl_util.h
+	ndk-build -C SDL2-2.0.4/build/net.exse.sdl_boulderdash
+
+SDL2-2.0.4/build/net.exse.sdl_boulderdash/local.properties: Makefile SDL2-2.0.4/build/net.exse.sdl_boulderdash
+	android update project --path SDL2-2.0.4/build/net.exse.sdl_boulderdash
+
+SDL2-2.0.4/build/net.exse.sdl_boulderdash: Makefile SDL2-2.0.4
 	SDL2-2.0.4/build-scripts/androidbuild.sh net.exse.sdl_boulderdash main.c bd_icon.c bd_lib.c bd_game.c sdl_util.c bd_caves.h bd_game.h bd_lib.h sdl_util.h
-	echo "android avd && emulator -avd .."
 	
 SDL2-2.0.4.tar.gz:
 	wget https://www.libsdl.org/release/SDL2-2.0.4.tar.gz
@@ -69,5 +79,5 @@ SDL2-2.0.4: SDL2-2.0.4.tar.gz
 	cp bd_36x36x4.png SDL2-2.0.4/android-project/res/drawable-hdpi/ic_launcher.png
 	cp bd_36x36x4.png SDL2-2.0.4/android-project/res/drawable-mdpi/ic_launcher.png
 
-.PHONY : clean all
+.PHONY : clean all android
 
