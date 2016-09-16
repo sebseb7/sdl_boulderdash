@@ -612,7 +612,7 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr,int getkey(int))
 			}
 		}
 	}
-	if(valid_rockford==0)
+	if((valid_rockford==0)&&(bd_game->Lost==0))
 		bd_game->Lost=1;
 
 
@@ -786,6 +786,7 @@ void bd_game_render(struct bd_game_struct_t* bd_game,unsigned int* pixelbuffer,i
 				}
 		}
 	}
+
 
 }
 
