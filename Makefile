@@ -1,5 +1,5 @@
 COMPILER = gcc
-FLAGS= -O3 --std=gnu99 -Wall  -funsigned-char -Wundef -Wsign-compare  -Wstrict-prototypes 
+FLAGS= -g -O0 --std=gnu99 -Wall  -funsigned-char -Wundef -Wsign-compare  -Wstrict-prototypes 
 LDFLAGS=
 
 FLAGS+= `sdl2-config --cflags`
@@ -54,19 +54,19 @@ SDL2-2.0.4-mingw:
 	rm -rf tmp
 	rm -f SDL2-devel-2.0.4-mingw.tar.gz
 
-android: Makefile SDL2-2.0.4/build/net.exse.sdl_boulderdash/bin/net.exse.sdl_boulderdash-debug.apk
+android: Makefile SDL2-2.0.4/build/net.exse.sebsblocdash/bin/net.exse.sebsblocdash-debug.apk
 
-SDL2-2.0.4/build/net.exse.sdl_boulderdash/bin/net.exse.sdl_boulderdash-debug.apk: Makefile SDL2-2.0.4/build/net.exse.sdl_boulderdash/libs/x86/libmain.so
-	ant -f SDL2-2.0.4/build/net.exse.sdl_boulderdash/build.xml debug
+SDL2-2.0.4/build/net.exse.sebsblocdash/bin/net.exse.sebsblocdash-debug.apk: Makefile SDL2-2.0.4/build/net.exse.sebsblocdash/libs/x86/libmain.so
+	ant -f SDL2-2.0.4/build/net.exse.sebsblocdash/build.xml debug
 
-SDL2-2.0.4/build/net.exse.sdl_boulderdash/libs/x86/libmain.so: Makefile SDL2-2.0.4/build/net.exse.sdl_boulderdash/local.properties main.c bd_icon.c bd_lib.c bd_game.c sdl_util.c bd_caves.h bd_game.h bd_lib.h sdl_util.h
-	ndk-build -C SDL2-2.0.4/build/net.exse.sdl_boulderdash
+SDL2-2.0.4/build/net.exse.sebsblocdash/libs/x86/libmain.so: Makefile SDL2-2.0.4/build/net.exse.sebsblocdash/local.properties main.c bd_icon.c bd_lib.c bd_game.c sdl_util.c bd_caves.h bd_game.h bd_lib.h sdl_util.h
+	ndk-build -C SDL2-2.0.4/build/net.exse.sebsblocdash
 
-SDL2-2.0.4/build/net.exse.sdl_boulderdash/local.properties: Makefile SDL2-2.0.4/build/net.exse.sdl_boulderdash
-	android update project --path SDL2-2.0.4/build/net.exse.sdl_boulderdash
+SDL2-2.0.4/build/net.exse.sebsblocdash/local.properties: Makefile SDL2-2.0.4/build/net.exse.sebsblocdash
+	android update project --path SDL2-2.0.4/build/net.exse.sebsblocdash
 
-SDL2-2.0.4/build/net.exse.sdl_boulderdash: Makefile SDL2-2.0.4
-	SDL2-2.0.4/build-scripts/androidbuild.sh net.exse.sdl_boulderdash main.c bd_icon.c bd_lib.c bd_game.c sdl_util.c bd_caves.h bd_game.h bd_lib.h sdl_util.h
+SDL2-2.0.4/build/net.exse.sebsblocdash: Makefile SDL2-2.0.4
+	SDL2-2.0.4/build-scripts/androidbuild.sh net.exse.sebsblocdash ../../../../../main.c ../../../../../bd_icon.c ../../../../../bd_lib.c ../../../../../bd_game.c ../../../../../sdl_util.c
 	
 SDL2-2.0.4.tar.gz:
 	wget https://www.libsdl.org/release/SDL2-2.0.4.tar.gz

@@ -1,6 +1,6 @@
 diff -Nur SDL2-2.0.4-orig/android-project/AndroidManifest.xml SDL2-2.0.4/android-project/AndroidManifest.xml
 --- SDL2-2.0.4-orig/android-project/AndroidManifest.xml	2016-01-02 20:56:31.000000000 +0100
-+++ SDL2-2.0.4/android-project/AndroidManifest.xml	2016-08-08 00:55:35.000000000 +0200
++++ SDL2-2.0.4/android-project/AndroidManifest.xml	2016-09-16 14:18:14.000000000 +0200
 @@ -9,7 +9,7 @@
        android:installLocation="auto">
  
@@ -20,7 +20,7 @@ diff -Nur SDL2-2.0.4-orig/android-project/AndroidManifest.xml SDL2-2.0.4/android
                  <action android:name="android.intent.action.MAIN" />
 diff -Nur SDL2-2.0.4-orig/android-project/ant.properties SDL2-2.0.4/android-project/ant.properties
 --- SDL2-2.0.4-orig/android-project/ant.properties	2016-01-02 20:56:31.000000000 +0100
-+++ SDL2-2.0.4/android-project/ant.properties	2016-08-10 03:52:47.000000000 +0200
++++ SDL2-2.0.4/android-project/ant.properties	2016-09-16 14:18:14.000000000 +0200
 @@ -14,4 +14,6 @@
  #  'key.store' for the location of your keystore and
  #  'key.alias' for the name of the key to use.
@@ -30,7 +30,7 @@ diff -Nur SDL2-2.0.4-orig/android-project/ant.properties SDL2-2.0.4/android-proj
  
 diff -Nur SDL2-2.0.4-orig/android-project/default.properties SDL2-2.0.4/android-project/default.properties
 --- SDL2-2.0.4-orig/android-project/default.properties	2016-01-02 20:56:31.000000000 +0100
-+++ SDL2-2.0.4/android-project/default.properties	2016-08-08 00:55:35.000000000 +0200
++++ SDL2-2.0.4/android-project/default.properties	2016-09-16 14:18:14.000000000 +0200
 @@ -8,4 +8,4 @@
  # project structure.
  
@@ -39,7 +39,7 @@ diff -Nur SDL2-2.0.4-orig/android-project/default.properties SDL2-2.0.4/android-
 +target=android-15
 diff -Nur SDL2-2.0.4-orig/android-project/jni/src/Android.mk SDL2-2.0.4/android-project/jni/src/Android.mk
 --- SDL2-2.0.4-orig/android-project/jni/src/Android.mk	2016-01-02 20:56:31.000000000 +0100
-+++ SDL2-2.0.4/android-project/jni/src/Android.mk	2016-08-08 00:55:35.000000000 +0200
++++ SDL2-2.0.4/android-project/jni/src/Android.mk	2016-09-16 14:18:14.000000000 +0200
 @@ -16,4 +16,6 @@
  
  LOCAL_LDLIBS := -lGLESv1_CM -lGLESv2 -llog
@@ -49,23 +49,82 @@ diff -Nur SDL2-2.0.4-orig/android-project/jni/src/Android.mk SDL2-2.0.4/android-
  include $(BUILD_SHARED_LIBRARY)
 diff -Nur SDL2-2.0.4-orig/android-project/project.properties SDL2-2.0.4/android-project/project.properties
 --- SDL2-2.0.4-orig/android-project/project.properties	2016-01-02 20:56:31.000000000 +0100
-+++ SDL2-2.0.4/android-project/project.properties	2016-08-08 00:55:35.000000000 +0200
++++ SDL2-2.0.4/android-project/project.properties	2016-09-16 14:18:14.000000000 +0200
 @@ -11,4 +11,4 @@
  #proguard.config=${sdk.dir}/tools/proguard/proguard-android.txt:proguard-project.txt
  
  # Project target.
 -target=android-12
 +target=android-15
-Binary files SDL2-2.0.4-orig/android-project/res/drawable-hdpi/ic_launcher.png and SDL2-2.0.4/android-project/res/drawable-hdpi/ic_launcher.png differ
-Binary files SDL2-2.0.4-orig/android-project/res/drawable-mdpi/ic_launcher.png and SDL2-2.0.4/android-project/res/drawable-mdpi/ic_launcher.png differ
-Binary files SDL2-2.0.4-orig/android-project/res/drawable-xhdpi/ic_launcher.png and SDL2-2.0.4/android-project/res/drawable-xhdpi/ic_launcher.png differ
-Binary files SDL2-2.0.4-orig/android-project/res/drawable-xxhdpi/ic_launcher.png and SDL2-2.0.4/android-project/res/drawable-xxhdpi/ic_launcher.png differ
 diff -Nur SDL2-2.0.4-orig/android-project/res/values/strings.xml SDL2-2.0.4/android-project/res/values/strings.xml
 --- SDL2-2.0.4-orig/android-project/res/values/strings.xml	2016-01-02 20:56:31.000000000 +0100
-+++ SDL2-2.0.4/android-project/res/values/strings.xml	2016-08-08 00:55:35.000000000 +0200
++++ SDL2-2.0.4/android-project/res/values/strings.xml	2016-09-16 14:18:14.000000000 +0200
 @@ -1,4 +1,4 @@
  <?xml version="1.0" encoding="utf-8"?>
  <resources>
 -    <string name="app_name">SDL App</string>
 +    <string name="app_name">Sebs BlocDash</string>
  </resources>
+diff -Nur SDL2-2.0.4-orig/build-scripts/androidbuild.sh SDL2-2.0.4/build-scripts/androidbuild.sh
+--- SDL2-2.0.4-orig/build-scripts/androidbuild.sh	2016-01-02 20:56:31.000000000 +0100
++++ SDL2-2.0.4/build-scripts/androidbuild.sh	2016-09-16 14:36:38.000000000 +0200
+@@ -8,14 +8,14 @@
+ if [[ $# -ge 2 ]]; then
+     for src in ${@:2}
+     do
+-        SOURCES+=($src)
++        SOURCES="$SOURCES $src"
+         MKSOURCES="$MKSOURCES $(basename $src)"
+     done
+ else
+     if [ -n "$1" ]; then
+         while read src
+         do
+-            SOURCES+=($src)
++            SOURCES="$SOURCES $src"
+             MKSOURCES="$MKSOURCES $(basename $src)"
+         done
+     fi
+@@ -87,15 +87,9 @@
+ fi
+ 
+ cp -r $SDLPATH/Android.mk $BUILDPATH/jni/SDL
+-sed -i "s|YourSourceHere.c|$MKSOURCES|g" $BUILDPATH/jni/src/Android.mk
++sed -i "s|YourSourceHere.c|$SOURCES|g" $BUILDPATH/jni/src/Android.mk
+ sed -i "s|org\.libsdl\.app|$APP|g" $BUILDPATH/AndroidManifest.xml
+ 
+-# Copy user sources
+-for src in "${SOURCES[@]}"
+-do
+-    cp $src $BUILDPATH/jni/src
+-done
+-
+ # Create an inherited Activity
+ cd $BUILDPATH/src
+ for folder in "${APPARR[@]}"
+@@ -112,24 +106,3 @@
+ echo "package $APP;" >  "$ACTIVITY.java"
+ echo "import org.libsdl.app.SDLActivity;" >> "$ACTIVITY.java"
+ echo "public class $ACTIVITY extends SDLActivity {}" >> "$ACTIVITY.java"
+-
+-# Update project and build
+-cd $BUILDPATH
+-$ANDROID update project --path $BUILDPATH
+-$NDKBUILD -j $NCPUS $NDKARGS
+-$ANT debug
+-
+-cd $CURDIR
+-
+-APK="$BUILDPATH/bin/$APP-debug.apk"
+-
+-if [ -f "$APK" ]; then
+-    echo "Your APK is ready at $APK"
+-    echo "To install to your device: "
+-    echo "cd  $BUILDPATH"
+-    echo "ant debug install"
+-    exit 0
+-fi
+-
+-echo "There was an error building the APK"
+-exit 1
+\ No newline at end of file
