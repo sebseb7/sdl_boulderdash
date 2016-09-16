@@ -35,7 +35,7 @@ Boulderdash.app/Contents/MacOS/bd_osx: bd_icon.c main.c sdl_util.c sdl_util.h bd
 bd_osx.zip: Boulderdash.app/Contents/MacOS/bd_osx
 	@zip -r bd_osx.zip Boulderdash.app
 
-bd.ico: bd_36x36x4.png Makefile
+bd.ico: bd_36x36x4.png 
 	icotool -c -o bd.ico bd_36x36x4.png
 
 bd.exe: bd_icon.c bd_36x36x4.png bd.ico main.c sdl_util.c sdl_util.h bd_lib.c bd_game.c bd_caves.h bd_game.h Makefile SDL2-2.0.4-mingw
@@ -54,15 +54,18 @@ SDL2-2.0.4-mingw:
 	rm -rf tmp
 	rm -f SDL2-devel-2.0.4-mingw.tar.gz
 
-android: Makefile SDL2-2.0.4/build/net.exse.sebsblocdash/bin/net.exse.sebsblocdash-debug.apk
+adb: android
+	ant -f SDL2-2.0.4/build/net.exse.sebsblocdash/build.xml installd
 
-SDL2-2.0.4/build/net.exse.sebsblocdash/bin/net.exse.sebsblocdash-debug.apk: Makefile SDL2-2.0.4/build/net.exse.sebsblocdash/libs/x86/libmain.so
+android: SDL2-2.0.4/build/net.exse.sebsblocdash/bin/net.exse.sebsblocdash-debug.apk
+
+SDL2-2.0.4/build/net.exse.sebsblocdash/bin/net.exse.sebsblocdash-debug.apk: SDL2-2.0.4/build/net.exse.sebsblocdash/libs/x86/libmain.so
 	ant -f SDL2-2.0.4/build/net.exse.sebsblocdash/build.xml debug
 
-SDL2-2.0.4/build/net.exse.sebsblocdash/libs/x86/libmain.so: Makefile SDL2-2.0.4/build/net.exse.sebsblocdash/local.properties main.c bd_icon.c bd_lib.c bd_game.c sdl_util.c bd_caves.h bd_game.h bd_lib.h sdl_util.h
+SDL2-2.0.4/build/net.exse.sebsblocdash/libs/x86/libmain.so: SDL2-2.0.4/build/net.exse.sebsblocdash/local.properties main.c bd_icon.c bd_lib.c bd_game.c sdl_util.c bd_caves.h bd_game.h bd_lib.h sdl_util.h
 	ndk-build -C SDL2-2.0.4/build/net.exse.sebsblocdash
 
-SDL2-2.0.4/build/net.exse.sebsblocdash/local.properties: Makefile SDL2-2.0.4/build/net.exse.sebsblocdash/AndroidManifest.xml
+SDL2-2.0.4/build/net.exse.sebsblocdash/local.properties: SDL2-2.0.4/build/net.exse.sebsblocdash/AndroidManifest.xml
 	android update project --path SDL2-2.0.4/build/net.exse.sebsblocdash
 
 SDL2-2.0.4/build/net.exse.sebsblocdash/AndroidManifest.xml: Makefile SDL2-2.0.4
@@ -79,5 +82,5 @@ SDL2-2.0.4: SDL2-2.0.4.tar.gz
 	cp bd_36x36x4.png SDL2-2.0.4/android-project/res/drawable-hdpi/ic_launcher.png
 	cp bd_36x36x4.png SDL2-2.0.4/android-project/res/drawable-mdpi/ic_launcher.png
 
-.PHONY : clean all android
+.PHONY : clean all android adb
 

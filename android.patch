@@ -20,13 +20,15 @@ diff -Nur SDL2-2.0.4-orig/android-project/AndroidManifest.xml SDL2-2.0.4/android
                  <action android:name="android.intent.action.MAIN" />
 diff -Nur SDL2-2.0.4-orig/android-project/ant.properties SDL2-2.0.4/android-project/ant.properties
 --- SDL2-2.0.4-orig/android-project/ant.properties	2016-01-02 20:56:31.000000000 +0100
-+++ SDL2-2.0.4/android-project/ant.properties	2016-09-16 14:18:14.000000000 +0200
-@@ -14,4 +14,6 @@
++++ SDL2-2.0.4/android-project/ant.properties	2016-09-16 15:42:50.000000000 +0200
+@@ -14,4 +14,8 @@
  #  'key.store' for the location of your keystore and
  #  'key.alias' for the name of the key to use.
  # The password will be asked during the build when you use the 'release' target.
 +key.store=android.keystore
 +key.alias=key1
++key.store.password=3h
++key.alias.password=3h
  
 diff -Nur SDL2-2.0.4-orig/android-project/default.properties SDL2-2.0.4/android-project/default.properties
 --- SDL2-2.0.4-orig/android-project/default.properties	2016-01-02 20:56:31.000000000 +0100
