@@ -217,6 +217,7 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr,int getkey(int))
 	}
 
 	int amoeba_possible=0;
+	int valid_rockford=0;
 
 	for(int y =0; y < CAVE_HEIGHT ; y++) 
 	{
@@ -292,6 +293,7 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr,int getkey(int))
 					}
 					break;
 				case BD_INBOX:
+					valid_rockford=1;
 					bd_game->Player_X=x;
 					if(bd_game->Tick == BD_START_DELAY)
 						new_cavemap[x][y]=BD_ROCKFORD;
@@ -299,6 +301,7 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr,int getkey(int))
 					break;
 				case BD_ROCKFORDgrab:
 				case BD_ROCKFORD:
+					valid_rockford=1;
 					if(move_tick ==0)
 					{
 
@@ -609,6 +612,8 @@ void bd_game_process(struct bd_game_struct_t** bd_game_ptr,int getkey(int))
 			}
 		}
 	}
+	if(valid_rockford==0)
+		bd_game->Lost=1;
 
 
 	bd_game->AmoebaSpace=amoeba_possible;
@@ -687,7 +692,7 @@ static void render_num(int number,int x,int y,int length,int pad, int typea, int
 		render_digit_5x3(x, y, pad, typea,typeb,display);
 		x+=4;
 	}
-	
+
 	render_digits_5x3(x, y, (char*)s, typea,typeb,display);
 
 }
@@ -716,7 +721,7 @@ void bd_game_render(struct bd_game_struct_t* bd_game,unsigned int* pixelbuffer,i
 
 	char display[CAVE_WIDTH][(INFO_HEIGHT+CAVE_HEIGHT)];
 	memset(display,0,(INFO_HEIGHT+CAVE_HEIGHT) * CAVE_WIDTH);
-	
+
 	//cave part:
 
 	for(int y = 0; y < CAVE_HEIGHT; y++) 
@@ -758,28 +763,29 @@ void bd_game_render(struct bd_game_struct_t* bd_game,unsigned int* pixelbuffer,i
 
 	if((bd_game->CaveTime - (bd_game->Tick / 8)) > 0)
 		render_num(bd_game->CaveTime - (bd_game->Tick / 8),28,22,3,0,BD_MAGICWALL,BD_BOULDER,display);
-	
+
 
 
 	// render to pixelbuffer
-		for(int y = 0; y < (INFO_HEIGHT+CAVE_HEIGHT); y++) 
+	for(int y = 0; y < (INFO_HEIGHT+CAVE_HEIGHT); y++) 
+	{
+		for(int x = 0; x < CAVE_WIDTH; x++) 
 		{
-			for(int x = 0; x < CAVE_WIDTH; x++) 
-			{
-				int colors[3];	
-				get_colors(display[x][y],rendertick,colors);
+			int colors[3];	
+			get_colors(display[x][y],rendertick,colors);
 
-				unsigned int col = (colors[0]<<16)+(colors[1]<<8)+colors[2];
+			unsigned int col = (colors[0]<<16)+(colors[1]<<8)+colors[2];
 
-				if(pixelbuffer[((y*zoom)*CAVE_WIDTH*zoom)+x*zoom] != col)
-					for(int a = 0; a < zoom;a++)
+			if(pixelbuffer[((y*zoom)*CAVE_WIDTH*zoom)+x*zoom] != col)
+				for(int a = 0; a < zoom;a++)
+				{
+					for(int b = 0;b < zoom;b++)
 					{
-						for(int b = 0;b < zoom;b++)
-						{
-							pixelbuffer[((y*zoom+a)*CAVE_WIDTH*zoom)+x*zoom+b] = col;
-						}
+						pixelbuffer[((y*zoom+a)*CAVE_WIDTH*zoom)+x*zoom+b] = col;
 					}
-			}
+				}
 		}
+	}
+
 }
 
