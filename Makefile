@@ -62,10 +62,10 @@ SDL2-2.0.4/build/net.exse.sebsblocdash/bin/net.exse.sebsblocdash-debug.apk: Make
 SDL2-2.0.4/build/net.exse.sebsblocdash/libs/x86/libmain.so: Makefile SDL2-2.0.4/build/net.exse.sebsblocdash/local.properties main.c bd_icon.c bd_lib.c bd_game.c sdl_util.c bd_caves.h bd_game.h bd_lib.h sdl_util.h
 	ndk-build -C SDL2-2.0.4/build/net.exse.sebsblocdash
 
-SDL2-2.0.4/build/net.exse.sebsblocdash/local.properties: Makefile SDL2-2.0.4/build/net.exse.sebsblocdash
+SDL2-2.0.4/build/net.exse.sebsblocdash/local.properties: Makefile SDL2-2.0.4/build/net.exse.sebsblocdash/AndroidManifest.xml
 	android update project --path SDL2-2.0.4/build/net.exse.sebsblocdash
 
-SDL2-2.0.4/build/net.exse.sebsblocdash: Makefile SDL2-2.0.4
+SDL2-2.0.4/build/net.exse.sebsblocdash/AndroidManifest.xml: Makefile SDL2-2.0.4
 	SDL2-2.0.4/build-scripts/androidbuild.sh net.exse.sebsblocdash ../../../../../main.c ../../../../../bd_icon.c ../../../../../bd_lib.c ../../../../../bd_game.c ../../../../../sdl_util.c
 	
 SDL2-2.0.4.tar.gz:
