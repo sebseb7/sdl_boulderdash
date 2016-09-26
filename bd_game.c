@@ -700,7 +700,7 @@ static void render_num(int number,int x,int y,int length,int pad, int typea, int
 
 int rendertick;
 
-void bd_game_render(struct bd_game_struct_t* bd_game,unsigned int* pixelbuffer,int zoom)
+void bd_game_render(struct bd_game_struct_t* bd_game,unsigned int* pixelbuffer,unsigned int zoom)
 {
 	rendertick++;
 
@@ -776,14 +776,16 @@ void bd_game_render(struct bd_game_struct_t* bd_game,unsigned int* pixelbuffer,i
 
 			unsigned int col = (colors[0]<<16)+(colors[1]<<8)+colors[2];
 
-			if(pixelbuffer[((y*zoom)*CAVE_WIDTH*zoom)+x*zoom] != col)
-				for(int a = 0; a < zoom;a++)
+			unsigned int start = y*zoom*CAVE_WIDTH*zoom + x*zoom;
+			unsigned int end = start + zoom*zoom*CAVE_WIDTH;
+
+			for(unsigned int a = start; a < end;a+=CAVE_WIDTH*zoom)
+			{
+				for(unsigned int b = a;b < a+zoom;b++)
 				{
-					for(int b = 0;b < zoom;b++)
-					{
-						pixelbuffer[((y*zoom+a)*CAVE_WIDTH*zoom)+x*zoom+b] = col;
-					}
+					pixelbuffer[b] = col;
 				}
+			}
 		}
 	}
 
